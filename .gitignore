@@ -1,0 +1,58 @@
+# ============================================================================= #
+# .gitignore - Prácticas de C                                                   #
+# ============================================================================= #
+
+# Archivos compilados
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+
+# Ejecutables
+programa
+a.out
+
+# Directorios de objetos
+obj/
+build/
+
+# Directorio de herramientas
+norminette/
+
+# Editor files
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.#*
+
+# Debugging
+*.dSYM/
+*.su
+*.gch
+core
+core.* 
+vgcore.*
+
+# Archivos temporales
+*.tmp
+*.temp
+*.log
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Valgrind output
+*.callgrind.out*
+
+# Configuración del editor
+.editorconfig
+
+# ============================================================================= #
