@@ -1,37 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strdup.c                                           :+:      :+:    :+:   */
+/*   ft_range.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/27 13:52:43 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/07/27 14:09:24 by fradiaz          ###   ########.fr       */
+/*   Created: 2026/07/27 14:10:36 by fradiaz           #+#    #+#             */
+/*   Updated: 2026/07/27 14:35:01 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 
-char	*ft_strdup(char *src)
+int	*ft_range(int min, int max)
 {
-	char			*dest;
-	size_t			len;
-	unsigned int	i;
+	long	size;
+	int		*range;
+	long	i;
 
-	len = 0;
+	if (min >= max)
+		return (NULL);
+	size = (long)max - (long)min;
+	range = malloc(sizeof(int) * size);
+	if (range == NULL)
+		return (NULL);
 	i = 0;
-	if (src == NULL)
-		return (NULL);
-	while (src[len])
-		len++;
-	dest = malloc(sizeof(char) * (len + 1));
-	if (dest == NULL)
-		return (NULL);
-	while (i < len)
+	while (i < size)
 	{
-		dest[i] = src[i];
+		range[i] = min + i;
 		i++;
 	}
-	dest[i] = '\0';
-	return (dest);
+	return (range);
 }
