@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 14:19:59 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/07/29 18:38:00 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/08/11 01:23:33 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,45 +43,52 @@ int	count_words(char *str, char *charset)
 	return (count);
 }
 
-int	ft_word_len(char *str, char *charset)
+void	free_split(char **tab)
 {
-	int	k;
+	int	i;
 
-	k = 0;
-	while (str[k] != '\0' && (!is_sep(str[k], charset)))
-		k++;
-	return (k);
+	if (!tab)
+		return ;
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
 }
 
-char	*ft_strdup(char *src, int len)
+char	*ft_strdup(char **src, char *charset)
 {
-	char			*dest;
-	unsigned int	i;
+	char	*dest;
+	int		i;
+	int		len;
 
-	i = 0;
-	if (src == NULL)
+	if (src == NULL || *src == NULL)
 		return (NULL);
+	len = 0;
+	while ((*src)[len] != '\0' && (!is_sep((*src)[len], charset)))
+		len++;
 	dest = malloc(sizeof(char) * (len + 1));
 	if (dest == NULL)
 		return (NULL);
+	i = 0;
 	while (i < len)
 	{
-		dest[i] = src[i];
+		dest[i] = (*src)[i];
 		i++;
 	}
 	dest[i] = '\0';
+	*src += len;
 	return (dest);
 }
 
 char	**ft_split(char *str, char *charset)
 {
-	int		num_words;
-	int		count_letters;
 	char	**res;
 	int		indice;
 
-	num_words = count_words(str, charset);
-	res = malloc(sizeof(char *) * (num_words + 1));
+	res = malloc(sizeof(char *) * (count_words(str, charset) + 1));
 	if (!res)
 		return (NULL);
 	indice = 0;
@@ -91,14 +98,55 @@ char	**ft_split(char *str, char *charset)
 			str++; //i++;
 		if (*str)
 		{
-			count_letters = ft_word_len(str, charset); // &str[i]
-			res[indice] = ft_strdup(str, count_letters); // &str[i]
+			res[indice] = ft_strdup(&str, charset); // &str[i]
 			if (!res[indice])
+			{
+				free_split(res);
 				return (NULL);
+			}
 			indice++;
-			str += count_letters; // i+= count_letters;
 		}
 	}
 	res[indice] = NULL;
 	return (res);
+}
+
+#include <stdio.h>
+
+// Declaración del prototipo de tu función
+
+void	print_and_free(char **res)
+{
+	int	i;
+
+	if (!res)
+	{
+		printf("Resultado: (null)\n\n");
+		return ;
+	}
+	i = 0;
+	while (res[i])
+	{
+		printf("  [%d]: \"%s\"\n", i, res[i]);
+		i++;
+	}
+	printf("  [%d]: NULL\n\n", i);
+	free_split(res); // Probamos tu función de liberación aquí
+}
+
+int	main(void)
+{
+	printf("--- Test 1: Cadena estándar ---\n");
+	print_and_free(ft_split("Hola 42 Malaga campus", " "));
+
+	printf("--- Test 2: Múltiples separadores juntos y extremos ---\n");
+	print_and_free(ft_split(";;;Hola;;mundo;;;", ";"));
+
+	printf("--- Test 3: Cadena vacía ---\n");
+	print_and_free(ft_split("", " "));
+
+	printf("--- Test 4: Sin separadores ---\n");
+	print_and_free(ft_split("PalabraSinSeparador", ","));
+
+	return (0);
 }
