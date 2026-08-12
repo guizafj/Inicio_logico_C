@@ -10,6 +10,7 @@ void	rush00(int x, int y);
 void	rush01(int x, int y);
 void	rush02(int x, int y);
 void	rush03(int x, int y);
-int     convert(char *str);
+int     convert(char *str, char *msg);
+int 	str_is_numeric(char *str);
 
 #endif

@@ -2,12 +2,11 @@
 
 #include "rush.h"
 
-int convert(char *str)
+int convert(char *str, char *msg)
 {
 	int 	resultado = 0;
 	int 	signo = 1;
 	int 	i = 0;
-	char	*message;
 
 	if (str[0] == '-') {
 		signo = -1;
@@ -16,13 +15,12 @@ int convert(char *str)
 	else if (str[0] == '+') {
 		i++; // Saltar el signo más si existe
 	}
-	message = "Error, el valor ingresado no es un número valido\n";
 	while (str[i] != '\0') 
 	{
 		// Verificar si el caracter es realmente un número
 		if (str[i] < '0' || str[i] > '9') 
 		{
-			print_message(message);
+			print_message(msg);
 			return 1;
 		}
 		// Aplicar el algoritmo
@@ -32,7 +30,6 @@ int convert(char *str)
 	return (resultado * signo);
 }
 
-
 int main(int argc, char *argv[])
 {
 	int	x;
@@ -40,15 +37,28 @@ int main(int argc, char *argv[])
 	int	option;
 	char	*message;
 
-	message = "Error: Por favor, introduce los parametros necesarios\n";
-	if (argc < 3) {
+	message = "Error, ingresa los parametros necesarios\n";	
+	if (argc < 3)
+	{
 		print_message(message);
 		return 1; // Terminar con código de error
 	}
-	x = convert(argv[1]);
-	y = convert(argv[2]);
+	x = str_is_numeric(argv[1]);
+	y = str_is_numeric(argv[2]);
+	message = "Error, el valor ingresado no es un número valido\n";
+	if (x != 1 || y != 1)
+	{
+		print_message(message);
+		return 1;
+	}
+	x = convert(argv[1], message);
+	y = convert(argv[2], message);
 	if (argc != 3)
-		option = convert(argv[3]);
+	{
+		option = str_is_numeric(argv[3]);
+		if (option == 1)
+			option = convert(argv[3], message);
+	}
 	else
 		option = 0;
 	if (option == 0)
