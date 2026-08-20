@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_boolean.h                                       :+:      :+:    :+:   */
+/*   ft_point.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/11 23:04:46 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/08/18 15:32:56 by fradiaz          ###   ########.fr       */
+/*   Created: 2026/08/19 21:18:38 by fradiaz           #+#    #+#             */
+/*   Updated: 2026/08/19 21:35:30 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_BOOLEAN_H
-# include <unistd.h>
-# define FT_BOOLEAN_H
+#ifndef FT_POINT_H
 
-# define EVEN_MSG "I have an even number of arguments.\n"
-# define ODD_MSG "I have an odd number of arguments.\n"
-# define SUCCESS 0
-# define EVEN(nbr) ((nbr) % 2 == 0)
+# define FT_POINT_H
 
-typedef enum e_bool
+typedef struct s_point
 {
-	FALSE,
-	TRUE
-}	t_bool;
+	int	x;
+	int	y;
+}	t_point;
+
 #endif

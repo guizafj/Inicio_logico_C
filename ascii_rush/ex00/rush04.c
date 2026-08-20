@@ -31,8 +31,6 @@ void	rush(int x, int y)
 	char	*message;
 
 	message = "Valores invalidos\n";
-	if ((x < '0' && x > '9') || (y < '0' && y > '9'))
-		return ;
 	if (x <= 0 || y <= 0)
 	{
 		print_message(message);
