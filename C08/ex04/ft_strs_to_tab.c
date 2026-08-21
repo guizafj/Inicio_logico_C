@@ -6,11 +6,13 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/20 10:51:22 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/08/21 14:02:17 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/08/21 15:45:41 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_stock_str.h"
+
+void	ft_show_tab(struct s_stock_str *par);
 
 int	ft_strlen(char *str)
 {
@@ -79,7 +81,7 @@ struct	s_stock_str	*ft_strs_to_tab(int ac, char **av)
 	tab[i].str = NULL;
 	return (tab);
 }
-
+/*
 int	main(int argc, char **argv)
 {
 	struct s_stock_str	*tab;
@@ -87,4 +89,4 @@ int	main(int argc, char **argv)
 	tab = ft_strs_to_tab(argc - 1, argv + 1);
 	(void)tab;
 	return (0);
-}
+}*/
