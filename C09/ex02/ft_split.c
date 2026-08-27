@@ -5,23 +5,23 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/28 14:19:59 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/08/27 12:49:42 by fradiaz          ###   ########.fr       */
+/*   Created: 2026/08/27 09:40:38 by fradiaz           #+#    #+#             */
+/*   Updated: 2026/08/27 13:05:16 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 
-int	is_sep(char c, char *charset)
+int	is_charset(char c, char *charset)
 {
-	int	j;
+	int	i;
 
-	j = 0;
-	while (charset[j])
+	i = 0;
+	while (charset[i] != '\0')
 	{
-		if (charset[j] == c)
+		if (c == charset[i])
 			return (1);
-		j++;
+		i++;
 	}
 	return (0);
 }
@@ -33,19 +33,80 @@ int	count_words(char *str, char *charset)
 
 	i = 0;
 	count = 0;
-	while (str[i])
+	while (str[i] != '\0')
 	{
-		if ((!is_sep(str[i], charset) && (str[i] != '\0'))
-			&& (is_sep(str[i - 1], charset) || i == 0))
+		if ((i == 0 || is_charset(str[i - 1], charset) == 1)
+			&& is_charset(str[i], charset) == 0)
 			count++;
 		i++;
 	}
 	return (count);
 }
 
-void	free_split(char **tab)
+size_t	word_length(char *str, char *charset)
 {
-	int	i;
+	size_t	len;
+
+	len = 0;
+	while (str[len] != '\0' && (is_charset(str[len], charset) == 0))
+		len++;
+	return (len);
+}
+
+char	*ft_strdup(char *str, char *charset)
+{
+	char	*strcp;
+	size_t	j;
+	size_t	len;
+
+	j = 0;
+	len = word_length(str, charset);
+	strcp = malloc(sizeof(char) * (len + 1));
+	if (!strcp)
+		return (NULL);
+	while (j < len)
+	{
+		strcp[j] = str[j];
+		j++;
+	}
+	strcp[j] = '\0';
+	return (strcp);
+}
+
+char	**ft_split(char *str, char *charset)
+{
+	char		**tab;
+	size_t		i;
+	int			word_index;
+
+	tab = malloc(sizeof(char *) * (count_words(str, charset) + 1));
+	if (!tab)
+		return (NULL);
+	i = 0;
+	word_index = 0;
+	while (str[i] != '\0')
+	{
+		if (is_charset(str[i], charset) == 0)
+		{
+			tab[word_index] = ft_strdup(&str[i], charset);
+			if (!tab[word_index])
+				return (NULL);
+			i += word_length(&str[i], charset);
+			word_index++;
+		}
+		else
+			i++;
+	}
+	tab[word_index] = NULL;
+	return (tab);
+}
+/*
+// Funciones auxiliares
+#include <stdio.h>
+
+void    free_split(char **tab)
+{
+	int i;
 
 	if (!tab)
 		return ;
@@ -58,65 +119,10 @@ void	free_split(char **tab)
 	free(tab);
 }
 
-char	*ft_strdup(char **src, char *charset)
+
+void    print_and_free(char **res)
 {
-	char	*dest;
-	int		i;
-	int		len;
-
-	if (src == NULL || *src == NULL)
-		return (NULL);
-	len = 0;
-	while ((*src)[len] != '\0' && (!is_sep((*src)[len], charset)))
-		len++;
-	dest = malloc(sizeof(char) * (len + 1));
-	if (dest == NULL)
-		return (NULL);
-	i = 0;
-	while (i < len)
-	{
-		dest[i] = (*src)[i];
-		i++;
-	}
-	dest[i] = '\0';
-	*src += len;
-	return (dest);
-}
-
-char	**ft_split(char *str, char *charset)
-{
-	char	**res;
-	int		indice;
-
-	res = malloc(sizeof(char *) * (count_words(str, charset) + 1));
-	if (!res)
-		return (NULL);
-	indice = 0;
-	while (*str) // str[i]
-	{
-		while (*str && is_sep(*str, charset))
-			str++; //i++;
-		if (*str)
-		{
-			res[indice] = ft_strdup(&str, charset); // &str[i]
-			if (!res[indice])
-			{
-				free_split(res);
-				return (NULL);
-			}
-			indice++;
-		}
-	}
-	res[indice] = NULL;
-	return (res);
-}
-
-#include <stdio.h>
-
-
-void	print_and_free(char **res)
-{
-	int	i;
+	int i;
 
 	if (!res)
 	{
@@ -133,11 +139,10 @@ void	print_and_free(char **res)
 	free_split(res); 
 }
 
-int	main(void)
+int main(void)
 {
 	printf("--- Test 1: Cadena estándar ---\n");
 	print_and_free(ft_split("Hola 42 Malaga campus", " "));
-
 	printf("--- Test 2: Múltiples separadores juntos y extremos ---\n");
 	print_and_free(ft_split(";;;Hola;;mundo;;;", ";"));
 
@@ -146,6 +151,6 @@ int	main(void)
 
 	printf("--- Test 4: Sin separadores ---\n");
 	print_and_free(ft_split("PalabraSinSeparador", ","));
-
 	return (0);
 }
+*/
