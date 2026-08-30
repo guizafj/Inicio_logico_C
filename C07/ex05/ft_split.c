@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 14:19:59 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/08/27 12:49:42 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/08/27 13:21:16 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,8 @@ char	**ft_split(char *str, char *charset)
 	res[indice] = NULL;
 	return (res);
 }
-
+/*
 #include <stdio.h>
-
 
 void	print_and_free(char **res)
 {
@@ -148,4 +147,4 @@ int	main(void)
 	print_and_free(ft_split("PalabraSinSeparador", ","));
 
 	return (0);
-}
+	}*/

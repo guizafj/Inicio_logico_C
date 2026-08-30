@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/27 09:40:38 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/08/27 13:05:16 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/08/28 10:20:21 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,11 @@ char	*ft_strdup(char *str, char *charset)
 	size_t	j;
 	size_t	len;
 
-	j = 0;
 	len = word_length(str, charset);
 	strcp = malloc(sizeof(char) * (len + 1));
 	if (!strcp)
 		return (NULL);
+	j = 0;
 	while (j < len)
 	{
 		strcp[j] = str[j];
@@ -118,7 +118,6 @@ void    free_split(char **tab)
 	}
 	free(tab);
 }
-
 
 void    print_and_free(char **res)
 {
