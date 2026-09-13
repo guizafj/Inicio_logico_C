@@ -1,24 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft.h                                               :+:      :+:    :+:   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/21 21:12:21 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/13 15:03:04 by fradiaz          ###   ########.fr       */
+/*   Created: 2026/09/11 17:13:57 by fradiaz           #+#    #+#             */
+/*   Updated: 2026/09/11 17:15:34 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_H
-
-# include <unistd.h>
-
-void	ft_putchar(char c);
-void	ft_putstr(char *str);
-int		ft_strcmp(char *s1, char *s2);
-int		ft_strlen(char *str);
-void	ft_swap(int *a, int *b);
-# define FT_H
-
-#endif
+int	ft_isalpha(int c)
+{
+	if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')))
+		return (0);
+	return (1);
+}

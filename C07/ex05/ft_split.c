@@ -6,13 +6,13 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 14:19:59 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/08/27 13:21:16 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/09/13 14:56:53 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 
-int	is_sep(char c, char *charset)
+int	ft_is_sep(char c, char *charset)
 {
 	int	j;
 
@@ -26,7 +26,7 @@ int	is_sep(char c, char *charset)
 	return (0);
 }
 
-int	count_words(char *str, char *charset)
+int	ft_count_words(char *str, char *charset)
 {
 	int	i;
 	int	count;
@@ -35,15 +35,15 @@ int	count_words(char *str, char *charset)
 	count = 0;
 	while (str[i])
 	{
-		if ((!is_sep(str[i], charset) && (str[i] != '\0'))
-			&& (is_sep(str[i - 1], charset) || i == 0))
+		if ((!ft_is_sep(str[i], charset) && (str[i] != '\0'))
+			&& (ft_is_sep(str[i - 1], charset) || i == 0))
 			count++;
 		i++;
 	}
 	return (count);
 }
 
-void	free_split(char **tab)
+void	ft_free_split(char **tab)
 {
 	int	i;
 
@@ -67,7 +67,7 @@ char	*ft_strdup(char **src, char *charset)
 	if (src == NULL || *src == NULL)
 		return (NULL);
 	len = 0;
-	while ((*src)[len] != '\0' && (!is_sep((*src)[len], charset)))
+	while ((*src)[len] != '\0' && (!ft_is_sep((*src)[len], charset)))
 		len++;
 	dest = malloc(sizeof(char) * (len + 1));
 	if (dest == NULL)
@@ -88,20 +88,20 @@ char	**ft_split(char *str, char *charset)
 	char	**res;
 	int		indice;
 
-	res = malloc(sizeof(char *) * (count_words(str, charset) + 1));
+	res = malloc(sizeof(char *) * (ft_count_words(str, charset) + 1));
 	if (!res)
 		return (NULL);
 	indice = 0;
 	while (*str) // str[i]
 	{
-		while (*str && is_sep(*str, charset))
+		while (*str && ft_is_sep(*str, charset))
 			str++; //i++;
 		if (*str)
 		{
 			res[indice] = ft_strdup(&str, charset); // &str[i]
 			if (!res[indice])
 			{
-				free_split(res);
+				ft_free_split(res);
 				return (NULL);
 			}
 			indice++;
@@ -113,7 +113,7 @@ char	**ft_split(char *str, char *charset)
 /*
 #include <stdio.h>
 
-void	print_and_free(char **res)
+void	ft_print_and_free(char **res)
 {
 	int	i;
 
@@ -129,22 +129,22 @@ void	print_and_free(char **res)
 		i++;
 	}
 	printf("  [%d]: NULL\n\n", i);
-	free_split(res); 
+	ft_free_split(res);
 }
 
 int	main(void)
 {
 	printf("--- Test 1: Cadena estándar ---\n");
-	print_and_free(ft_split("Hola 42 Malaga campus", " "));
+	ft_print_and_free(ft_split("Hola 42 Malaga campus", " "));
 
 	printf("--- Test 2: Múltiples separadores juntos y extremos ---\n");
-	print_and_free(ft_split(";;;Hola;;mundo;;;", ";"));
+	ft_print_and_free(ft_split(";;;Hola;;mundo;;;", ";"));
 
 	printf("--- Test 3: Cadena vacía ---\n");
-	print_and_free(ft_split("", " "));
+	ft_print_and_free(ft_split("", " "));
 
 	printf("--- Test 4: Sin separadores ---\n");
-	print_and_free(ft_split("PalabraSinSeparador", ","));
+	ft_print_and_free(ft_split("PalabraSinSeparador", ","));
 
 	return (0);
 	}*/

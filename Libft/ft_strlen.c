@@ -1,24 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft.h                                               :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/21 21:12:21 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/13 15:03:04 by fradiaz          ###   ########.fr       */
+/*   Created: 2026/09/11 17:36:08 by fradiaz           #+#    #+#             */
+/*   Updated: 2026/09/13 13:59:11 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_H
+int	ft_strlen(char *str)
+{
+	int	length;
 
-# include <unistd.h>
-
-void	ft_putchar(char c);
-void	ft_putstr(char *str);
-int		ft_strcmp(char *s1, char *s2);
-int		ft_strlen(char *str);
-void	ft_swap(int *a, int *b);
-# define FT_H
-
-#endif
+	if (!str)
+		return (0);
+	length = 0;
+	while (str[length])
+		length++;
+	return (length);
+}

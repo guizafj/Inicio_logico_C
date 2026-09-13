@@ -12,9 +12,9 @@
 
 #include <stdlib.h>
 
-long	atoi_base(char *str, char *base, int len);
+long	ft_atoi_base(char *str, char *base, int len);
 
-static int	check_base(char *str)
+static int	ft_check_base(char *str)
 {
 	int	len_base;
 	int	i;
@@ -63,7 +63,7 @@ static void	ft_fill_nbr(int len, long nbr, char *base_to, char *dest)
 	int	module;
 	int	len_to;
 
-	len_to = check_base(base_to);
+	len_to = ft_check_base(base_to);
 	if (nbr < 0)
 	{
 		dest[0] = '-';
@@ -89,11 +89,11 @@ char	*ft_convert_base(char *nbr, char *base_from, char *base_to)
 	size_t	size;
 	char	*str_reserved;
 
-	len_from = check_base(base_from);
-	len_to = check_base(base_to);
+	len_from = ft_check_base(base_from);
+	len_to = ft_check_base(base_to);
 	if (len_from == 0 || len_to == 0)
 		return (NULL);
-	result = atoi_base(nbr, base_from, len_from);
+	result = ft_atoi_base(nbr, base_from, len_from);
 	size = ft_nbr_len(result, len_to);
 	str_reserved = malloc(sizeof(char) * (size + 1));
 	if (!str_reserved)

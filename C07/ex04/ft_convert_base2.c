@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-int	is_negative(char *str, int i, int *signo)
+int	ft_is_negative(char *str, int i, int *signo)
 {
 	int	neg;
 
@@ -26,7 +26,7 @@ int	is_negative(char *str, int i, int *signo)
 	return (i);
 }
 
-int	skip_spaces(char *str)
+int	ft_skip_spaces(char *str)
 {
 	int	i;
 
@@ -40,7 +40,7 @@ int	skip_spaces(char *str)
 	return (i);
 }
 
-int	this_is_in_the_base(char c, char *base)
+int	ft_this_is_in_the_base(char c, char *base)
 {
 	int	i;
 
@@ -54,7 +54,7 @@ int	this_is_in_the_base(char c, char *base)
 	return (-1);
 }
 
-long	atoi_base(char *str, char *base, int len)
+long	ft_atoi_base(char *str, char *base, int len)
 {
 	int		i;
 	long	result;
@@ -65,12 +65,12 @@ long	atoi_base(char *str, char *base, int len)
 	signo = 1;
 	if (len == 0)
 		return (0);
-	i = skip_spaces(str);
-	i = is_negative(str, i, &signo);
+	i = ft_skip_spaces(str);
+	i = ft_is_negative(str, i, &signo);
 	value = 0;
 	while (str[i] && value != -1)
 	{
-		value = this_is_in_the_base(str[i], base);
+		value = ft_this_is_in_the_base(str[i], base);
 		if (value != -1)
 			result = result * len + value;
 		i++;
