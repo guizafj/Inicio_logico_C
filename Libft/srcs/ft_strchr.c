@@ -1,23 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/09/11 17:36:08 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/13 13:59:11 by fradiaz          ###   ########.fr       */
+/*   Created: 2026/09/14 15:32:04 by fradiaz           #+#    #+#             */
+/*   Updated: 2026/09/15 12:55:57 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strlen(char *str)
-{
-	int	length;
+#include "ft_libft.h"
 
-	if (!str)
-		return (0);
-	length = 0;
-	while (str[length])
-		length++;
-	return (length);
+char	*strchr(const char *s, int c)
+{
+	int		index;
+	char	*dst;
+
+	index = 0;
+	while (s[index] != (char)c && s[index] != '\0')
+		index++;
+	if (s[index] == (char)c)
+		dst = (char *)&s[index];
+	else
+		dst = (void *)0;
+	return (dst);
 }

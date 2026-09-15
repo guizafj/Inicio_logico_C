@@ -1,38 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/09/12 22:00:41 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/13 14:26:53 by fradiaz          ###   ########.fr       */
+/*   Created: 2026/09/15 09:44:51 by fradiaz           #+#    #+#             */
+/*   Updated: 2026/09/15 12:55:28 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	*memmove(void *dest, const void *src, size_t n)
+#include "ft_libft.h"
+
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	unsigned char		*buff_dest;
-	const unsigned char	*buff_src;
+	const unsigned char	*buff_s1;
+	const unsigned char	*buff_s2;
 	size_t				index;
 
-	buff_dest = (unsigned char *)dest;
-	buff_src = (const unsigned char *)src;
-	if (!buff_dest && !buff_src)
-		return (dest);
+	if (n == 0)
+		return (0);
+	buff_s1 = (const unsigned char *)s1;
+	buff_s2 = (const unsigned char *)s2;
 	index = 0;
-	if (buff_dest <= buff_src)
-	{
-		while (index < n)
-		{
-			buff_dest[index] = buff_src[index];
-			index++;
-		}
-	}
-	else
-	{
-		while (n--)
-			buff_dest[n] = buff_src[n];
-	}
-	return (dest);
+	while (index < (n - 1) && (buff_s1[index] == buff_s2[index]))
+		index++;
+	return (buff_s1[index] - buff_s2[index]);
 }
