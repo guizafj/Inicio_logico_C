@@ -1,20 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/09/11 17:15:47 by fradiaz           #+#    #+#             */
+/*   Created: 2026/09/16 10:35:10 by fradiaz           #+#    #+#             */
 /*   Updated: 2026/09/16 10:59:45 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_libft.h"
 
-int	ft_isdigit(int c)
+char	*ft_strdup(const char *str)
 {
-	if (!(c >= '0' && c <= '9'))
-		return (0);
-	return (1);
+	size_t	length;
+	char	*ptr;
+
+	length = ft_strlen(str);
+	ptr = malloc(sizeof(char) * (length + 1));
+	if (!ptr)
+		return (NULL);
+	length = 0;
+	while (str[length])
+	{
+		ptr[length] = str[length];
+		length++;
+	}
+	ptr[length] = '\0';
+	return (ptr);
 }
+/* Use correct -> ft_memcpy(ptr, str, len + 1);*/

@@ -12,11 +12,13 @@ NAME	= libft.a
 
 # Compilation and flags
 CC 		= cc
-CFLAGS	= -Wall -Wextra -Werror -c -I includes
+CFLAGS	= -Wall -Wextra -Werror -c 
+INCLUDE	= -I includes
 
 # Directories
 SRCS	= src/ft_atoi.c\
-		  srcs/ft_bzero.\
+		  srcs/ft_bzero.c\
+		  srcs/ft_calloc.c\
 		  srcs/ft_isalnum.c\
 		  srcs/ft_isalpha.c\
 		  srcs/ft_isascii.c\
@@ -24,9 +26,11 @@ SRCS	= src/ft_atoi.c\
 		  srcs/ft_isprint.c\
 		  srcs/ft_memchr.c\
 		  srcs/ft_memcmp.c\
+		  src/ft_memcpy.c\
 		  srcs/ft_memmove.c\
 		  srcs/ft_memset.c\
 		  srcs/ft_strchr.c\
+		  srcs/ft_strdup.c\
 		  srcs/ft_strlcat.c\
 		  srcs/ft_strlcpy.c\
 		  srcs/ft_strlen.c\
@@ -41,14 +45,14 @@ OBJS	= $(SRCS:.c=.o)
 
 # Tools
 RM	= rm -f
-AR	= ar -rc
+AR	= ar rcs
 
 # Default rule
 all: $(NAME)
 
 # Implicit rule to compiling .c files into .o files
 %.o: %.c
-	$(CC) $(CFLAGS) $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDE) $< -o $@
 
 # Package library
 $(NAME): $(OBJS)
@@ -69,6 +73,6 @@ fclean: clean
 re: fclean all
 
  # Phony targets (They are not real files)
-.PHONY: all clean fclean re $(NAME)
+.PHONY: all clean fclean re
 
 # ============================================================================= #
