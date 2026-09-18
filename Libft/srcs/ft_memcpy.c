@@ -6,13 +6,13 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/12 21:27:05 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/16 10:59:45 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/09/18 21:27:57 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_libft.h"
+#include "libft.h"
 
-void	*memcpy(void *dest, const void *src, size_t n)
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
 	unsigned char		*buff_dest;
 	const unsigned char	*buff_src;

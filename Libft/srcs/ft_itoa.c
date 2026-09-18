@@ -6,11 +6,11 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/18 14:11:18 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/18 21:14:27 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/09/18 21:27:57 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_libft.h"
+#include "libft.h"
 
 static size_t	len_n(long n)
 {

@@ -6,11 +6,11 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/18 11:57:07 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/18 19:55:12 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/09/18 21:27:57 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_libft.h"
+#include "libft.h"
 
 static size_t	count_words(char const *str, char set)
 {

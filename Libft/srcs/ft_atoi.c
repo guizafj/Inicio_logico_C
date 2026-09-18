@@ -6,11 +6,11 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/15 11:00:17 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/17 14:15:42 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/09/18 21:27:57 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_libft.h"
+#include "libft.h"
 
 int	ft_atoi(const char *nptr)
 {

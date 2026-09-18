@@ -6,11 +6,11 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/16 17:09:12 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/18 11:55:34 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/09/18 21:27:57 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_libft.h"
+#include "libft.h"
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
