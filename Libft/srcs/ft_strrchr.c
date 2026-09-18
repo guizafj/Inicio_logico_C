@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/14 17:01:51 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/18 21:27:57 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/09/19 00:47:18 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,18 @@
 
 char	*ft_strrchr(const char *s, int c)
 {
-	int		index;
-	char	*dst;
+	int			index;
+	const char	*dst;
 
 	index = 0;
-	dst = '\0';
+	dst = NULL;
 	while (s[index] != '\0')
 	{
 		if (s[index] == (char)c)
 			dst = s + index;
 		index++;
 	}
-	return (dst);
+	if ((char)c == '\0')
+		return ((char *)(s + index));
+	return ((char *)dst);
 }
