@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/15 12:24:17 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/16 11:18:40 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/09/18 11:57:38 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,10 @@ char	*ft_strrchr(const char *s, int c);
 int		ft_tolower(int c);
 int		ft_toupper(int c);
 void	*memcpy(void *dest, const void *src, size_t n);
+void	*calloc(size_t n, size_t size);
 char	*ft_strdup(const char *str);
+char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strtrim(char const *s1, char const *set);
+char 	**ft_split(char const *s, char c);
 
 #endif

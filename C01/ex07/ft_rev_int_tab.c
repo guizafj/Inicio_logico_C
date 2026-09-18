@@ -1,4 +1,6 @@
 
+#include <stdio.h>
+
 void	ft_rev_int_tab(int *tab, int size)
 {
 	int	inicio;
@@ -16,16 +18,20 @@ void	ft_rev_int_tab(int *tab, int size)
 		final--;
 	}
 }
-#include <stdio.h>
+
+
+
 int	main(void)
 {
-	int num[] = {1,5,0, 4,5};
-	int i = 0;
-	
+	int	num[5];
+	int	i;
+
+	i = 0;
+	num = {1, 5, 0, 4, 5};
 	ft_rev_int_tab(num, 5);
 	while (i < 5)
 	{
 		printf("%i", num[i]);
-	i++;
+		i++;
 	}
 }
