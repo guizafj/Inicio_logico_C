@@ -8,56 +8,62 @@
 # ============================================================================ #
 
 # Name of library
-NAME	= libft.a
+NAME		= libft.a
 
 # Compilation and flags
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror
-INCLUDE	= -I includes
+CFLAGS		= -Wall -Wextra -Werror
+INCLUDE		= -I includes
 
-# Directories
-SRCS	= srcs/ft_atoi.c \
-          srcs/ft_bzero.c \
-          srcs/ft_calloc.c \
-          srcs/ft_isalnum.c \
-          srcs/ft_isalpha.c \
-          srcs/ft_isascii.c \
-          srcs/ft_isdigit.c \
-          srcs/ft_isprint.c \
-          srcs/ft_itoa.c \
-          srcs/ft_memchr.c \
-          srcs/ft_memcmp.c \
-          srcs/ft_memcpy.c \
-          srcs/ft_memmove.c \
-          srcs/ft_memset.c \
-          srcs/ft_putchar_fd.c \
-          srcs/ft_putendl_fd.c \
-          srcs/ft_putnbr_fd.c \
-          srcs/ft_putstr_fd.c \
-          srcs/ft_strchr.c \
-          srcs/ft_strdup.c \
-          srcs/ft_striteri.c \
-          srcs/ft_strjoin.c \
-          srcs/ft_strlcat.c \
-          srcs/ft_strlcpy.c \
-          srcs/ft_strlen.c \
-          srcs/ft_strmapi.c \
-          srcs/ft_strncmp.c \
-          srcs/ft_strnstr.c \
-          srcs/ft_strrchr.c \
-          srcs/ft_strtrim.c \
-          srcs/ft_substr.c \
-          srcs/ft_tolower.c \
-          srcs/ft_toupper.c \
-          srcs/ft_split.c \
-          srcs/ft_lstnew.c
+SRC_DIR		= srcs
 
-# source and object files
-OBJS	= $(SRCS:.c=.o)
+SRCS		= $(SRC_DIR)/ft_atoi.c \
+          $(SRC_DIR)/ft_bzero.c \
+          $(SRC_DIR)/ft_calloc.c \
+          $(SRC_DIR)/ft_isalnum.c \
+          $(SRC_DIR)/ft_isalpha.c \
+          $(SRC_DIR)/ft_isascii.c \
+          $(SRC_DIR)/ft_isdigit.c \
+          $(SRC_DIR)/ft_isprint.c \
+          $(SRC_DIR)/ft_itoa.c \
+          $(SRC_DIR)/ft_memchr.c \
+          $(SRC_DIR)/ft_memcmp.c \
+          $(SRC_DIR)/ft_memcpy.c \
+          $(SRC_DIR)/ft_memmove.c \
+          $(SRC_DIR)/ft_memset.c \
+          $(SRC_DIR)/ft_putchar_fd.c \
+          $(SRC_DIR)/ft_putendl_fd.c \
+          $(SRC_DIR)/ft_putnbr_fd.c \
+          $(SRC_DIR)/ft_putstr_fd.c \
+          $(SRC_DIR)/ft_strchr.c \
+          $(SRC_DIR)/ft_strdup.c \
+          $(SRC_DIR)/ft_striteri.c \
+          $(SRC_DIR)/ft_strjoin.c \
+          $(SRC_DIR)/ft_strlcat.c \
+          $(SRC_DIR)/ft_strlcpy.c \
+          $(SRC_DIR)/ft_strlen.c \
+          $(SRC_DIR)/ft_strmapi.c \
+          $(SRC_DIR)/ft_strncmp.c \
+          $(SRC_DIR)/ft_strnstr.c \
+          $(SRC_DIR)/ft_strrchr.c \
+          $(SRC_DIR)/ft_strtrim.c \
+          $(SRC_DIR)/ft_substr.c \
+          $(SRC_DIR)/ft_tolower.c \
+          $(SRC_DIR)/ft_toupper.c \
+          $(SRC_DIR)/ft_split.c \
+          $(SRC_DIR)/ft_lstnew.c\
+		  $(SRC_DIR)/ft_lstadd_front.c\
+		  $(SRC_DIR)/ft_lstsize.c\
+		  $(SRC_DIR)/ft_lstlast.c\
+		  $(SRC_DIR)/ft_lstdelone.c\
+		  $(SRC_DIR)/ft_lstclear.c\
+		  $(SRC_DIR)/ft_lstiter.c\
+		  $(SRC_DIR)/ft_lstmap.c
 
-# Tools
-RM	= rm -f
-AR	= ar rcs
+OBJS		= $(SRCS:.c=.o)
+
+RM		= rm -f
+AR		= ar rcs
 
 # Default rule
 all: $(NAME)
