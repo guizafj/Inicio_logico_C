@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/09/18 11:57:07 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/22 12:50:34 by fradiaz          ###   ########.fr       */
+/*   Created: 2026/09/21 13:48:39 by fradiaz           #+#    #+#             */
+/*   Updated: 2026/09/22 19:33:24 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,3 +97,18 @@ char	**ft_split(char const *s, char c)
 	}
 	return (arr_ptr);
 }
+
+/*
+#include<stdio.h>
+int main(int argc, char **argv){
+
+char **result = ft_split(argv[1], ' ');
+int i = 0;
+while (result[i]){
+printf("%s\n", result[i]);
+i++;
+}
+free_split(result);
+
+return (0);
+}*/
