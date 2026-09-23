@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/28 13:53:59 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/03 20:51:51 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/09/23 21:43:43 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,3 +114,5 @@ int	main(int argc, char **argv)
 	}
 	return (0);
 }
+
+/*prueba de modificación*/
