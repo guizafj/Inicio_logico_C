@@ -6,12 +6,15 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/21 13:49:29 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/21 13:49:30 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/09/24 08:39:26 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/*
+Safely concatenates strings while controlling the destination buffer size.
+*/
 size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
 	size_t	dst_length;
@@ -35,3 +38,13 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 	dst[dst_length + src_index] = '\0';
 	return (dst_length + src_length);
 }
+/*
+int	main(int argc, char **argv)
+{
+	size_t	buff;
+
+	buff = ft_strlcat(argv[1], argv[2], 9);
+	(void)argc;
+	printf("%zu ", buff);
+	return (0);
+}*/

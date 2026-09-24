@@ -6,12 +6,15 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/21 13:50:05 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/21 13:50:06 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/09/24 09:09:31 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/*
+Applies a function to each character of a string, creating a new string.
+*/
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
 	unsigned int	index;
@@ -33,3 +36,29 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	ptr[index] = '\0';
 	return (ptr);
 }
+/*
+static char	to_upper(unsigned int index, char character)
+{
+	(void) index;
+	if (character >= 'a' && character <= 'z')
+		character -= 'a' - 'A';
+	return (character);
+}
+
+int	main(int argc, char **argv)
+{
+	char	*result;
+
+	if (argc != 2)
+	{
+		printf("Uso: %s texto\n", argv[0]);
+		return (1);
+	}
+	result = ft_strmapi(argv[1], to_upper);
+	if (!result)
+		return (1);
+	printf("Original: %s\n", argv[1]);
+	printf("Resultado: %s\n", result);
+	free(result);
+	return (0);
+}*/

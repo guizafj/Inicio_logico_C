@@ -6,12 +6,15 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/21 13:48:39 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/22 19:33:24 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/09/24 10:39:52 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/*
+Splits a string using a delimiter character and returns an array of strings.
+*/
 static size_t	count_words(char const *str, char set)
 {
 	size_t	index;
@@ -97,18 +100,18 @@ char	**ft_split(char const *s, char c)
 	}
 	return (arr_ptr);
 }
-
 /*
-#include<stdio.h>
-int main(int argc, char **argv){
+int main(int argc, char **argv)
+{
+	char **result = ft_split(argv[1], ' ');
+	int 	i = 0;
 
-char **result = ft_split(argv[1], ' ');
-int i = 0;
-while (result[i]){
-printf("%s\n", result[i]);
-i++;
-}
-free_split(result);
-
-return (0);
+	(void)argc;
+	while (result[i])
+	{
+		printf("%s\n", result[i]);
+		i++;
+	}
+	free_split(result);
+	return (0);
 }*/

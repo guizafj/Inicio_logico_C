@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/15 12:24:17 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/23 11:16:51 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/09/24 10:26:13 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-
-# include <stdio.h>
 
 typedef struct s_list
 {

@@ -6,12 +6,15 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/21 13:48:30 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/21 13:48:31 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/09/23 22:44:00 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/*
+Writes a string to a file descriptor.
+*/
 void	ft_putstr_fd(char *s, int fd)
 {
 	size_t	len;

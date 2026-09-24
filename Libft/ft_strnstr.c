@@ -6,12 +6,15 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/21 13:50:23 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/21 13:50:26 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/09/24 09:25:12 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/*
+Searches for a string within the first n characters of another string.
+*/
 char	*ft_strnstr(const char *str, const char *to_find, size_t n)
 {
 	size_t	index_a;
@@ -32,3 +35,13 @@ char	*ft_strnstr(const char *str, const char *to_find, size_t n)
 	}
 	return ((void *)0);
 }
+/*
+int	main(int argc, char **argv)
+{
+	char	*result;
+
+	result = ft_strnstr(argv[1], argv[2], 6);
+	(void)argc;
+	printf("%s ", result);
+	return (0);
+}*/

@@ -6,12 +6,15 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/21 13:50:58 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/21 13:50:59 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/09/24 09:56:57 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/*
+Extracts a substring from a string.
+*/
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*ptr;
@@ -37,3 +40,17 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	ptr[index] = '\0';
 	return (ptr);
 }
+/*
+int	main(int argc, char **argv)
+{
+	char	*result;
+
+	if (argc != 2)
+		return (1);
+	result = ft_substr(argv[1], 3, 19);
+	if (!result)
+		return (1);
+	printf("%s\n", result);
+	free(result);
+	return (0);
+}*/

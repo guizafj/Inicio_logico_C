@@ -6,12 +6,15 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/21 13:47:53 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/21 13:47:54 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/09/23 22:41:59 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/*
+Writes an integer (int) to a file descriptor.
+*/
 void	ft_putnbr_fd(int n, int fd)
 {
 	long	num;

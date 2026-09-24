@@ -6,12 +6,15 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/21 13:48:48 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/21 16:39:42 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/09/23 23:00:51 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/*
+Searches for the first occurrence of a character in a string.
+*/
 char	*ft_strchr(const char *s, int c)
 {
 	int		index;
@@ -26,3 +29,11 @@ char	*ft_strchr(const char *s, int c)
 		dst = (void *)0;
 	return (dst);
 }
+/*
+int	main(void)
+{
+	char  str[27] = "Esta busqueda no es valida";
+
+	printf("%s ", ft_strchr(str, 'q'));
+	return (0);
+}*/

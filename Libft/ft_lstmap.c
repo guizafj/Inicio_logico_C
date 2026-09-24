@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/21 13:45:47 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/23 14:24:04 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/09/24 10:33:25 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 	void	*new_content;
 	t_list	*new_list;
 
-	if (!lst || !f || !del)
+	if (!lst || !f)
 		return (NULL);
 	new_list = NULL;
 	while (lst != NULL)
