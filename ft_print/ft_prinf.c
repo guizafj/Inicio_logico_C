@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/25 21:13:30 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/28 00:50:05 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/09/28 16:36:29 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,27 +36,27 @@ static int	check_parameter(char c, va_list args)
 	return (len);
 }
 
-int	ft_printf(char const *str, ...)
+int	ft_printf(char const *format, ...)
 {
 	va_list	args;
 	int		len;
 	int		i;
 
-	if (!str)
+	if (!format)
 		return (-1);
 	i = 0;
 	len = 0;
-	va_start(args, str);
-	while (str[i])
+	va_start(args, format);
+	while (format[i])
 	{
-		if (str[i] != '%')
-			len += ft_putchar(str[i]);
+		if (format[i] != '%')
+			len += ft_putchar(format[i]);
 		else
 		{
 			i++;
-			len += check_parameter(str[i], args);
+			len += check_parameter(format[i], args);
 		}
-		if (str[i])
+		if (format[i])
 			i++;
 	}
 	va_end(args);

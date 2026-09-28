@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/25 00:23:00 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/28 00:26:07 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/09/28 16:37:27 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define FT_PRINTF_H
 
 # include <unistd.h>
-# include <stdlib.h>
 # include <stdarg.h>
 
 int	ft_printf(char const *str, ...);
