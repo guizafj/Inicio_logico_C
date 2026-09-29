@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/28 15:18:56 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/28 15:19:01 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/09/29 11:31:26 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,12 @@ int	ft_putnbr_base(unsigned long nbr, char *base)
 		len_base++;
 	len = 0;
 	if (nbr >= len_base)
-		len += ft_putnbr_base((nbr / len_base), base);
-	ft_putchar((base[nbr % len_base]));
+	{
+		len = ft_putnbr_base(nbr / len_base, base);
+		if (len == -1)
+			return (-1);
+	}
+	if (ft_putchar(base[nbr % len_base]) == -1)
+		return (-1);
 	return (len + 1);
 }
