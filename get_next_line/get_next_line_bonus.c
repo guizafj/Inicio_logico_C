@@ -1,19 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/09/29 14:26:15 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/04 22:03:22 by fradiaz          ###   ########.fr       */
+/*   Created: 2026/10/04 18:43:14 by fradiaz           #+#    #+#             */
+/*   Updated: 2026/10/04 22:05:41 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 /*
-This function it`s iterative and read, use one file descriptor
+This function it`s iterative and read, use one file descriptor or several
+file descriptors
 */
 
 static char	*extract_line(char **ptr)
@@ -68,44 +69,49 @@ static char	*read_and_join(int fd, char *stash)
 
 char	*get_next_line(int fd)
 {
-	static char	*stash;
+	static char	*stash[1024];
 	char		*line;
 
-	if (stash == NULL)
-		stash = ft_strdup("");
-	stash = read_and_join(fd, stash);
-	if (!stash || *stash == '\0')
+	if (fd < 0 || fd >= 1024 || BUFFER_SIZE <= 0)
+		return (NULL);
+	if (stash[fd] == NULL)
+		stash[fd] = ft_strdup("");
+	stash[fd] = read_and_join(fd, stash[fd]);
+	if (!stash[fd] || *stash[fd] == '\0')
 	{
-		free(stash);
-		stash = NULL;
+		free(stash[fd]);
+		stash[fd] = NULL;
 		return (NULL);
 	}
-	if (ft_strchr(stash, '\n'))
-		line = extract_line(&stash);
+	if (ft_strchr(stash[fd], '\n'))
+		line = extract_line(&stash[fd]);
 	else
 	{
-		line = ft_strdup(stash);
-		free(stash);
-		stash = NULL;
+		line = ft_strdup(stash[fd]);
+		free(stash[fd]);
+		stash[fd] = NULL;
 	}
 	return (line);
 }
 /*
 # include <stdio.h>
 # include <fcntl.h>
-int	main(int argc, char **argv)
+int	main(void)
 {
-	int		fd;
-	char	*line;
+	char	*line1;
+	char	*line2;
+	int		fd2;
+	int		fd1;
 
-	if (argc == 1)
-		fd = 0;
-	else
-		fd = open(argv[1], O_RDONLY);
-	while ((line = get_next_line(fd)) != NULL)
+	fd1 = open("get_next_line.c", O_RDONLY);
+	fd2 = open("get_next_line.h", O_RDONLY);
+	while ((line1 = get_next_line(fd1)) != NULL
+			&& (line2 = get_next_line(fd2)) != NULL)
 	{
-		printf("%s", line);
-		free(line);
+		printf("%s", line1);
+		free(line1);
+		printf("%s", line2);
+		free(line2);
 	}
 	return (0);
 }*/
