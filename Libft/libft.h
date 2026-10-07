@@ -6,15 +6,23 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/15 12:24:17 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/24 20:04:21 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/07 16:38:06 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
+
+# define MAX_FD 1024
+
 # include <unistd.h>
 # include <stdlib.h>
+# include <stdarg.h>
+# include <limits.h>
 
 typedef struct s_list
 {
@@ -65,6 +73,13 @@ void			ft_lstdelone(t_list *lst, void (*del)(void *));
 void			ft_lstclear(t_list **lst, void (*del)(void *));
 void			ft_lstiter(t_list *lst, void (*f)(void *));
 t_list			*ft_lstmap(t_list *lst, void *(*f)(void *),
-					void(*del)(void *));
+					void (*del)(void *));
+int				ft_printf(char const *str, ...);
+int				ft_putchar_printf(int c);
+int				ft_putstr_printf(char *s);
+int				ft_putnbr_printf(int n);
+int				ft_putnbr_base_printf(unsigned long nbr, char *base);
+int				ft_putnbr_addrr_printf(void *addr);
+char			*ft_get_next_line(int fd);
 
 #endif
