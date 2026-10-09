@@ -1,0 +1,39 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/09/21 13:50:15 by fradiaz           #+#    #+#             */
+/*   Updated: 2026/09/24 09:21:09 by fradiaz          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+/*
+Compares up to n characters of two strings.
+*/
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t	index;
+
+	if (n == 0)
+		return (0);
+	index = 0;
+	while ((s1[index] != '\0' && s2[index] != '\0')
+		&& (s1[index] == s2[index]) && (index < (n - 1)))
+		index++;
+	return ((unsigned char)s1[index] - (unsigned char)s2[index]);
+}
+/*
+int	main(int argc, char **argv)
+{
+	size_t	result;
+
+	result = ft_strncmp(argv[1], argv[2], 4);
+	(void)argc;
+	printf("%zu ", result);
+	return (0);
+}*/
