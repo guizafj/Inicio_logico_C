@@ -6,12 +6,12 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/05 18:44:07 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/08 03:43:30 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/13 00:06:39 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
+/*
 size_t	compute_disorder(t_to_order stack a)
 {
 	int	mistakes;
@@ -29,4 +29,4 @@ size_t	compute_disorder(t_to_order stack a)
 	if a[i] > a[j] :
 		mistakes += 1
 	return (mi);
-}
+}*/

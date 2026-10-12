@@ -6,40 +6,39 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/25 21:13:30 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/07 18:31:03 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/13 00:22:13 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	check_parameter(int fd, char c, va_list args)
+static int	check_parameter(char c, va_list args)
 {
 	int	len;
 
 	len = 0;
 	if (c == 'c')
-		len += ft_putchar_printf(fd, va_arg(args, int));
+		len += ft_putchar_printf(va_arg(args, int));
 	else if (c == 's')
-		len += ft_putstr_printf(fd, va_arg(args, char *));
+		len += ft_putstr_printf(va_arg(args, char *));
 	else if (c == 'p')
-		len += ft_putnbr_addrr_printf(fd, va_arg(args, void *));
+		len += ft_putnbr_addrr_printf(va_arg(args, void *));
 	else if (c == 'd' || c == 'i')
-		len += ft_putnbr_printf(fd, va_arg(args, int));
+		len += ft_putnbr_printf(va_arg(args, int));
 	else if (c == 'u')
-		len += ft_putnbr_base_printf(fd, va_arg(args, unsigned int),
-				"0123456789");
+		len += ft_putnbr_base_printf(va_arg(args, unsigned int), "0123456789");
 	else if (c == 'x')
-		len += ft_putnbr_base_printf(fd, va_arg(args, unsigned int),
+		len += ft_putnbr_base_printf(va_arg(args, unsigned int),
 				"0123456789abcdef");
 	else if (c == 'X')
-		len += ft_putnbr_base_printf(fd, va_arg(args, unsigned int),
+		len += ft_putnbr_base_printf(va_arg(args, unsigned int),
 				"0123456789ABCDEF");
 	else if (c == '%')
-		len += ft_putchar_printf(fd, '%');
+		len += ft_putchar_printf('%');
 	return (len);
 }
 
-int	ft_printf(int fd, char const *format, ...)
+int	ft_printf(char const *format, ...)
 {
 	va_list	args;
 	int		len;
@@ -53,11 +52,11 @@ int	ft_printf(int fd, char const *format, ...)
 	while (format[i])
 	{
 		if (format[i] != '%')
-			len += ft_putchar_printf(fd, format[i]);
+			len += ft_putchar_printf(format[i]);
 		else
 		{
 			i++;
-			len += check_parameter(fd, format[i], args);
+			len += check_parameter(format[i], args);
 		}
 		if (format[i])
 			i++;
@@ -66,19 +65,14 @@ int	ft_printf(int fd, char const *format, ...)
 	return (len);
 }
 /*
-#include <stdio.h>
-
 int	main(void)
 {
-ft_printf("char: %c\n", '\0');
-//printf("str: %s\n", (void *)0);
-ft_printf("ptr: %p\n", (void *) 0x1234);
-ft_printf("int: %d %i\n", -42, 42);
-ft_printf("uint: %u\n", 4294967295u);
-ft_printf("hex: %x %X\n", 255, 255);
-ft_printf("percent: %%\n");
-printf("%x\n", -9876);
-ft_printf("%x\n", -9876);
-ft_printf(" jknjhb%");
-return (0);
+	ft_printf("char: %c\n", 'A');
+	ft_printf("str: %s\n", "hola");
+	ft_printf("ptr: %p\n", (void *) 0x1234);
+	ft_printf("int: %d %i\n", -42, 42);
+	ft_printf("uint: %u\n", 4294967295u);
+	ft_printf("hex: %x %X\n", 255, 255);
+	ft_printf("percent: %%\n");
+	return (0);
 }*/

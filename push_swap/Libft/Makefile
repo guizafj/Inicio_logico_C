@@ -58,8 +58,12 @@ SRCS		= ft_atoi.c \
 		  ft_lstiter.c\
 		  ft_lstmap.c\
 		  ft_aux_printf.c\
+		  ft_aux_dprintf.c\
 		  ft_printf.c\
-		  ft_get_next_line.c
+		  ft_get_next_line.c\
+		  ft_strcmp.c\
+		  ft_dprintf.c
+
 
 OBJS		= $(SRCS:.c=.o)
 

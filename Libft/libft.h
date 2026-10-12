@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/15 12:24:17 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/07 16:38:06 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/11 18:38:13 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,20 @@ void			ft_lstdelone(t_list *lst, void (*del)(void *));
 void			ft_lstclear(t_list **lst, void (*del)(void *));
 void			ft_lstiter(t_list *lst, void (*f)(void *));
 t_list			*ft_lstmap(t_list *lst, void *(*f)(void *),
-					void (*del)(void *));
-int				ft_printf(char const *str, ...);
-int				ft_putchar_printf(int c);
-int				ft_putstr_printf(char *s);
-int				ft_putnbr_printf(int n);
-int				ft_putnbr_base_printf(unsigned long nbr, char *base);
-int				ft_putnbr_addrr_printf(void *addr);
+					void(*del)(void *));
+int				ft_dprintf(int fd, char const *str, ...);
+int				ft_putchar_dprintf(int fd, int c);
+int				ft_putstr_dprintf(int fd, char *s);
+int				ft_putnbr_dprintf(int fd, int n);
+int				ft_putnbr_base_dprintf(int fd, unsigned long nbr, char *base);
+int				ft_putnbr_addrr_dprintf(int fd, void *addr);
 char			*ft_get_next_line(int fd);
+int				ft_strcmp(char *s1, char *s2);
+int				ft_printf(char const *format, ...);
+int				ft_putchar_printf(int c);
+int				ft_putnbr_addrr_printf(void *addr);
+int				ft_putnbr_base_printf(unsigned long nbr, char *base);
+int				ft_putnbr_printf(int n);
+int				ft_putstr_printf(char *s);
 
 #endif

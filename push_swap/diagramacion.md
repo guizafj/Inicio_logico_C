@@ -22,10 +22,42 @@ Las estrategias previstas son:
     indice de desorden.
 ## Conclusiones de diseno
 
-### Flujo comun
-Los tres algoritmos deben recibir una entrada ya validada y una estructura de
-pilas consistente. La validacion, la gestion de memoria y el registro de
-operaciones no deben duplicarse dentro de cada algoritmo.
+### Flujo comun y Orquestacion
+La aplicacion utiliza una funcion orquestadora (`orchestrating_function`) que
+gestiona el ciclo de vida completo de la entrada, la validacion y la reserva
+de memoria.
+
+Se adopta una convencion estricta de codigos de retorno tipo UNIX en todas las
+funciones de validacion y parseo:
+- `0`: Exito total. La ejecucion continua.
+- `-1`: Error fatal. Se detiene el flujo inmediatamente, se libera toda la
+  memoria dinamica reservada hasta ese punto y se emite `"Error\n"` en `stderr` (fd 2).
+
+El flujo de procesamiento previo al algoritmo se divide en fases ordenadas:
+1. **Normalizacion textual:** `join_args` unifica todos los argumentos de la
+   linea de comandos intercalando espacios y detectando cadenas vacias (`""`).
+2. **Tokenizacion:** `ft_split_set` descompone la cadena unificada en una matriz
+   de tokens (`char **tokens`), eliminando cualquier delimitador de espacio en blanco.
+   La cadena unificada se libera inmediatamente tras el split.
+3. **Clasificacion de tokens:**
+   - **Banderas (flags):** Se identifican los selectores de estrategia (`--simple`,
+     `--medium`, `--complex`, `--adaptive`) y el modo de metricas (`--bench`).
+     Se guardan en una estructura de configuracion (`t_config`). Se rechazan banderas
+     desconocidas o mutuamente excluyentes (retornando `-1`).
+   - **Numeros:** Se verifica su formato sintactico y se convierten mediante
+     `ft_atol_safe`, controlando desbordamientos respecto a `INT_MIN` e `INT_MAX`.
+4. **Almacenamiento intermedio en array plano (`int *`):**
+   Los valores numericos validados se almacenan primero en un array dinamico
+   contiguo de enteros en lugar de crear nodos de pila directamente.
+5. **Comprobacion de duplicados:** Se ejecuta sobre el array contiguo. Si existe
+   algun duplicado, se libera el array, se liberan los tokens y se retorna `-1`.
+6. **Indexacion (normalizacion de valores):**
+   A partir del array de enteros, se calculan los indices relativos (rango de `0`
+   a `n - 1`). Esto simplifica radicalmente los algoritmos posteriores (especialmente
+   Radix LSD y Chunks).
+7. **Construccion de la Pila A:** Con los indices validados, se puebla la
+   estructura definitiva de la Pila A y se libera el array temporal y la matriz
+   de tokens con `free_matrix`.
 ### Representacion por indices
 
 Conviene transformar los valores originales en indices ordenados antes de
@@ -89,23 +121,35 @@ pilas. De esta forma el selector puede probarse de manera independiente.
 
 ```mermaid
 flowchart TD
-    A[Inicio] --> B[Leer argc y argv]
-    B --> C[Validar formato]
-    C -->|Entrada invalida| E[Mostrar Error]
-    C -->|Entrada valida| D[Convertir valores]
-    D --> F[Comprobar duplicados]
-    F -->|Duplicados| E
-    F -->|Datos validos| G[Construir pila A]
-    G --> H[Calcular indice de desorden]
-    H --> I{Elegir algoritmo}
-    I -->|D menor que 0.2, complejidad lineal| J[Metodo lineal adaptado]
-    I -->|D desde 0.2 hasta antes de 0.5, complejidad n por raiz de n| K[Chunks]
-    I -->|D desde 0.5, complejidad n por log n| L[Radix LSD o metodo equivalente]
-    J --> M[Verificar pila ordenada]
-    K --> M
-    L --> M
-    M --> N[Mostrar operaciones]
-    N --> O[Fin]
+    A[Inicio: argc, argv] --> B[join_args: Unificar entrada]
+    B -->|Cadena vacia o error| E[Liberar memoria y Mostrar Error]
+    B -->|Cadena unificada| C[ft_split_set: Tokenizar]
+    C -->|Fallo o tokens vacios| E
+    C --> D[Clasificar tokens: Flags vs Numeros]
+    D -->|Flag invalida o conflicto| E
+    D -->|Formato no numerico o fuera de INT| E
+    D -->|Tokens validos| F[Guardar en array plano int*]
+    F --> G{Comprobar duplicados en array}
+    G -->|Duplicados encontrados| E
+    G -->|Sin duplicados| H[Normalizar valores a indices 0 a n-1]
+    H --> I[Liberar array y tokens]
+    I --> J[Construir Pila A con indices]
+    J --> K[Calcular indice de desorden compute_disorder]
+    K --> L{Estrategia forzada por flag?}
+    L -->|Si: --simple, --medium o --complex| M[Usar algoritmo forzado]
+    L -->|No o --adaptive| N{Selector segun desorden D}
+    N -->|D menor que 0.2| O[Metodo lineal adaptado O n]
+    N -->|D entre 0.2 y 0.5| P[Chunks O n raiz de n]
+    N -->|D mayor o igual a 0.5| Q[Radix LSD o equivalente O n log n]
+    M --> R[Ejecutar ordenacion y verificar]
+    O --> R
+    P --> R
+    Q --> R
+    R --> S[Mostrar operaciones en stdout]
+    S --> T{Modo --bench activo?}
+    T -->|Si| U[Mostrar metricas en stderr]
+    T -->|No| V[Liberar Pila A y Fin]
+    U --> V
 ```
 
 ## Diagrama de decision adaptativa

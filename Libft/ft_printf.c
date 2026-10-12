@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/25 21:13:30 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/07 15:51:50 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/13 00:22:13 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,19 +65,14 @@ int	ft_printf(char const *format, ...)
 	return (len);
 }
 /*
-#include <stdio.h>
-
 int	main(void)
 {
-ft_printf("char: %c\n", '\0');
-//printf("str: %s\n", (void *)0);
-ft_printf("ptr: %p\n", (void *) 0x1234);
-ft_printf("int: %d %i\n", -42, 42);
-ft_printf("uint: %u\n", 4294967295u);
-ft_printf("hex: %x %X\n", 255, 255);
-ft_printf("percent: %%\n");
-printf("%x\n", -9876);
-ft_printf("%x\n", -9876);
-ft_printf(" jknjhb%");
-return (0);
+	ft_printf("char: %c\n", 'A');
+	ft_printf("str: %s\n", "hola");
+	ft_printf("ptr: %p\n", (void *) 0x1234);
+	ft_printf("int: %d %i\n", -42, 42);
+	ft_printf("uint: %u\n", 4294967295u);
+	ft_printf("hex: %x %X\n", 255, 255);
+	ft_printf("percent: %%\n");
+	return (0);
 }*/
