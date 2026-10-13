@@ -6,11 +6,29 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/12 01:13:24 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/13 00:36:06 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/13 01:41:39 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+static int	is_all_spaces(char *str)
+{
+	size_t	spaces;
+	int		index;
+
+	spaces = 0;
+	index = 0;
+	while (str[index])
+	{
+		if (str[index] == ' ')
+			spaces++;
+		index++;
+	}
+	if (spaces == ft_strlen(str))
+		return (-1);
+	return (0);
+}
 
 static char	*join_with_space_and_free(char *str1, char *str2)
 {
@@ -39,6 +57,11 @@ char	*join_args(int argc, char **argv)
 	index = 1;
 	while (index < argc)
 	{
+		if (is_all_spaces(argv[index]) == -1)
+		{
+			free(point_stack);
+			return (NULL);
+		}
 		if (argv[index][0] == '\0')
 		{
 			free(point_stack);

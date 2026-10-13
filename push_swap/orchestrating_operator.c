@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/12 11:11:23 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/12 23:16:31 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/13 01:54:29 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,6 @@ int	orchestrating_function(int argc, char **argv, t_config *config)
 	}
 	free_matrix(tokens);
 	if (!stack_a)
-		return (-1);
+		return (0);
 	return (0);
 }
