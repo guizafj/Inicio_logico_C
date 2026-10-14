@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/12 11:13:39 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/13 00:00:29 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/14 21:16:46 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	ft_atol_safe(const char *nptr, int *out_number)
 	while (nptr[index] >= '0' && nptr[index] <= '9')
 	{
 		result = result * 10 + (nptr[index] - '0');
-		if (result > (long)INT_MAX + 1)
+		if (result > (long) INT_MAX + 1)
 			return (-1);
 		index++;
 	}
@@ -46,29 +46,29 @@ static int	process_number_token(char *token, t_to_order **stack_a)
 	t_to_order	*new_node;
 
 	if (ft_atol_safe(token, &nbr) == -1
-		|| has_duplicate(*stack_a, nbr) == 1)
+		|| ft_has_duplicate(*stack_a, nbr) == 1)
 	{
-		stack_clear(stack_a);
+		ft_stack_clear(stack_a);
 		return (-1);
 	}
-	new_node = node_new(nbr);
+	new_node = ft_node_new(nbr);
 	if (!new_node)
 	{
-		stack_clear(stack_a);
+		ft_stack_clear(stack_a);
 		return (-1);
 	}
-	stack_add_back(stack_a, new_node);
+	ft_stack_add_front(stack_a, new_node);
 	return (0);
 }
 
-int	extract_and_load_stack(char **tokens, t_to_order **stack_a)
+int	ft_extract_and_load_stack(char **tokens, t_to_order **stack_a)
 {
-	int			len;
+	int	len;
 
 	len = 0;
 	while (tokens[len] != NULL)
 	{
-		if (what_is_in_this_position(tokens[len]) != 2)
+		if (ft_what_in_position(tokens[len]) != 2)
 			len++;
 		else
 		{
@@ -77,6 +77,6 @@ int	extract_and_load_stack(char **tokens, t_to_order **stack_a)
 			len++;
 		}
 	}
+	index_stack(stack_a);
 	return (0);
 }
-

@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/12 01:13:24 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/13 01:41:39 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/13 23:19:07 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static char	*join_with_space_and_free(char *str1, char *str2)
 	return (result);
 }
 
-char	*join_args(int argc, char **argv)
+char	*ft_join_args(int argc, char **argv)
 {
 	char	*point_stack;
 	int		index;

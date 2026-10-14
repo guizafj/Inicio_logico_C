@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/05 18:45:35 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/13 00:05:04 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/14 21:51:05 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,17 @@ typedef enum e_strategy
 	STRAT_ADAPTIVE
 }	t_strategy;
 
+typedef enum e_op
+{
+	
+}
+
 typedef struct s_config
 {
 	t_strategy	strategy;
 	int			bench;
+	int			disorder;
+	int			op_counts[11];
 }	t_config;
 
 typedef struct s_to_order
@@ -38,18 +45,20 @@ typedef struct s_to_order
 }	t_to_order;
 
 char		**ft_split_set(char *str, char *charset);
-char		*join_args(int argc, char **argv);
-void		free_matrix(char **tokens);
-int			validate_flags(char *str, t_config *config);
+char		*ft_join_args(int argc, char **argv);
+void		ft_free_matrix(char **tokens);
+int			ft_validate_flags(char *str, t_config *config);
 int			ft_atol_safe(const char *nptr, int *out_number);
-int			orchestrating_function(int argc, char **argv, t_config *config);
-int			is_valid_input(char **tokens, t_config *config);
-int			what_is_in_this_position(char *pos);
-int			extract_and_load_stack(char **tokens, t_to_order **stack_a);
-t_to_order	*stack_last(t_to_order *stack);
-void		stack_add_back(t_to_order **stack, t_to_order *new_node);
-void		stack_clear(t_to_order **stack);
-int			has_duplicate(t_to_order *stack, int value);
-t_to_order	*node_new(int value);
+int			ft_orchestating_function(int argc, char **argv, t_config *config,
+				t_to_order **stack_a);
+int			ft_is_valid_input(char **tokens, t_config *config);
+int			ft_what_in_position(char *pos);
+int			ft_extract_and_load_stack(char **tokens, t_to_order **stack_a);
+t_to_order	*ft_stack_last(t_to_order *stack);
+void		ft_stack_add_front(t_to_order **stack, t_to_order *new_node);
+void		ft_stack_clear(t_to_order **stack);
+int			ft_has_duplicate(t_to_order *stack, int value);
+void		index_stack(t_to_order **stack_a);
+t_to_order	*ft_node_new(int value);
 
 #endif

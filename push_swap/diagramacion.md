@@ -35,29 +35,65 @@ funciones de validacion y parseo:
 
 El flujo de procesamiento previo al algoritmo se divide en fases ordenadas:
 1. **Normalizacion textual:** `join_args` unifica todos los argumentos de la
-   linea de comandos intercalando espacios y detectando cadenas vacias (`""`).
+   linea de comandos intercalando espacios y detectando cadenas vacias (`""`)
+   o cadenas compuestas exclusivamente por espacios en blanco.
 2. **Tokenizacion:** `ft_split_set` descompone la cadena unificada en una matriz
    de tokens (`char **tokens`), eliminando cualquier delimitador de espacio en blanco.
    La cadena unificada se libera inmediatamente tras el split.
-3. **Clasificacion de tokens:**
+3. **Clasificacion de tokens y validacion sintactica (`is_valid_input`):**
    - **Banderas (flags):** Se identifican los selectores de estrategia (`--simple`,
      `--medium`, `--complex`, `--adaptive`) y el modo de metricas (`--bench`).
-     Se guardan en una estructura de configuracion (`t_config`). Se rechazan banderas
-     desconocidas o mutuamente excluyentes (retornando `-1`).
-   - **Numeros:** Se verifica su formato sintactico y se convierten mediante
-     `ft_atol_safe`, controlando desbordamientos respecto a `INT_MIN` e `INT_MAX`.
-4. **Almacenamiento intermedio en array plano (`int *`):**
-   Los valores numericos validados se almacenan primero en un array dinamico
-   contiguo de enteros en lugar de crear nodos de pila directamente.
-5. **Comprobacion de duplicados:** Se ejecuta sobre el array contiguo. Si existe
-   algun duplicado, se libera el array, se liberan los tokens y se retorna `-1`.
-6. **Indexacion (normalizacion de valores):**
-   A partir del array de enteros, se calculan los indices relativos (rango de `0`
-   a `n - 1`). Esto simplifica radicalmente los algoritmos posteriores (especialmente
-   Radix LSD y Chunks).
-7. **Construccion de la Pila A:** Con los indices validados, se puebla la
-   estructura definitiva de la Pila A y se libera el array temporal y la matriz
-   de tokens con `free_matrix`.
+     Se validan con `validate_flags` y se registran en una estructura de configuracion
+     `t_config` basada en el enum `t_strategy`. Se rechazan banderas desconocidas o
+     conflictos entre estrategias (retornando `-1`).
+   - **Numeros:** Se verifica su formato sintactico con `is_valid_number_format`
+     (signo opcional seguido unicamente de digitos).
+4. **Construccion de la Pila A e insercion validada (`extract_and_load_stack`):**
+   En una sola pasada sobre los tokens validados:
+   - Los tokens de tipo bandera se omiten.
+   - Cada token numerico se convierte con `ft_atol_safe`, controlando desbordamientos
+     respecto a `INT_MIN` e `INT_MAX`.
+   - Se comprueba en tiempo de insercion que no exista duplicado en la lista (`has_duplicate`).
+   - Se crea dinamicamente el nodo (`node_new`) inicializando `index = -1` y se enlaza
+     al final de la lista con `stack_add_back`.
+   - Si ocurre cualquier error durante este proceso, la funcion invoca `stack_clear`
+     sobre la pila parcialmente construida y propaga el codigo de error `-1`.
+5. **Gestion del ciclo de vida y casos limite:**
+   - Si no se proporcionan argumentos (`argc < 2`), el programa retorna `0` en silencio.
+   - Si la entrada es valida pero no contiene numeros (por ejemplo, unicamente flags),
+     el programa termina con exito y en silencio (`return 0`).
+   - En cualquier escenario de error (`-1`), la orquestadora garantiza la liberacion de
+     la matriz de tokens (`free_matrix`), la limpieza de la pila (`stack_clear`) y la
+     emision del mensaje `"Error\n"` en `stderr` (fd 2).
+6. **Estructuras de datos del modulo:**
+   ```c
+   typedef enum e_strategy
+   {
+       STRAT_NONE,
+       STRAT_SIMPLE,
+       STRAT_MEDIUM,
+       STRAT_COMPLEX,
+       STRAT_ADAPTIVE
+   }   t_strategy;
+
+   typedef struct s_config
+   {
+       t_strategy  strategy;
+       int         bench;
+   }   t_config;
+
+   typedef struct s_to_order
+   {
+       int                 value;
+       int                 index;
+       struct s_to_order   *next;
+   }   t_to_order;
+   ```
+7. **Siguientes fases arquitectonicas:**
+   - **Indexacion (normalizacion de valores):** Asignar a cada nodo en `stack_a->index`
+     su posicion relativa de orden (`0` a `n - 1`).
+   - **Calculo de desorden (`compute_disorder`):** Medir el ratio $D$ de pares desordenados.
+   - **Selector de estrategia:** Aplicar la flag configurada o decidir en base a $D$.
 ### Representacion por indices
 
 Conviene transformar los valores originales en indices ordenados antes de
@@ -121,35 +157,40 @@ pilas. De esta forma el selector puede probarse de manera independiente.
 
 ```mermaid
 flowchart TD
-    A[Inicio: argc, argv] --> B[join_args: Unificar entrada]
-    B -->|Cadena vacia o error| E[Liberar memoria y Mostrar Error]
-    B -->|Cadena unificada| C[ft_split_set: Tokenizar]
-    C -->|Fallo o tokens vacios| E
-    C --> D[Clasificar tokens: Flags vs Numeros]
-    D -->|Flag invalida o conflicto| E
-    D -->|Formato no numerico o fuera de INT| E
-    D -->|Tokens validos| F[Guardar en array plano int*]
-    F --> G{Comprobar duplicados en array}
-    G -->|Duplicados encontrados| E
-    G -->|Sin duplicados| H[Normalizar valores a indices 0 a n-1]
-    H --> I[Liberar array y tokens]
-    I --> J[Construir Pila A con indices]
-    J --> K[Calcular indice de desorden compute_disorder]
-    K --> L{Estrategia forzada por flag?}
-    L -->|Si: --simple, --medium o --complex| M[Usar algoritmo forzado]
-    L -->|No o --adaptive| N{Selector segun desorden D}
-    N -->|D menor que 0.2| O[Metodo lineal adaptado O n]
-    N -->|D entre 0.2 y 0.5| P[Chunks O n raiz de n]
-    N -->|D mayor o igual a 0.5| Q[Radix LSD o equivalente O n log n]
-    M --> R[Ejecutar ordenacion y verificar]
-    O --> R
-    P --> R
-    Q --> R
-    R --> S[Mostrar operaciones en stdout]
-    S --> T{Modo --bench activo?}
-    T -->|Si| U[Mostrar metricas en stderr]
-    T -->|No| V[Liberar Pila A y Fin]
-    U --> V
+    A[Inicio: argc, argv] --> B{argc < 2?}
+    B -->|Si| Z[Fin silencioso: return 0]
+    B -->|No| C[join_args: Unificar argumentos]
+    C -->|Cadena vacia o error| ERR[Liberar memoria y Mostrar Error en stderr fd 2]
+    C -->|Cadena unificada| D[ft_split_set: Tokenizar en matriz tokens]
+    D -->|Fallo o matriz vacia| ERR
+    D --> E[is_valid_input: Validar sintaxis y Flags]
+    E -->|Flag invalida o conflicto entre estrategias| ERR
+    E -->|Token no numerico ni flag| ERR
+    E -->|Sintaxis valida| F[extract_and_load_stack: Poblar Pila A]
+    F -->|Overflow INT o Duplicado detectado| ERR
+    F -->|Fallo de malloc| ERR
+    F --> G[free_matrix: Liberar tokens]
+    G --> H{Pila A vacia? Sin numeros}
+    H -->|Si: solo habia flags| Z
+    H -->|No| I{Pila A tiene 1 elemento o esta ordenada?}
+    I -->|Si| J[Fin silencioso: return 0]
+    I -->|No| K[Normalizar a indices: index 0 a n-1]
+    K --> L[compute_disorder: Calcular indice D]
+    L --> M{Estrategia forzada por flag?}
+    M -->|Si: --simple, --medium o --complex| N[Ejecutar estrategia forzada]
+    M -->|No: --adaptive por defecto| O{Selector adaptativo segun D}
+    O -->|D menor que 0.2| P[Metodo adaptado O n]
+    O -->|D entre 0.2 y 0.5| Q[Chunks O n raiz de n]
+    O -->|D mayor o igual a 0.5| R[Radix LSD O n log n]
+    N --> S[Generar operaciones de ordenacion]
+    P --> S
+    Q --> S
+    R --> S
+    S --> T[Imprimir operaciones en stdout]
+    T --> U{Flag --bench activa?}
+    U -->|Si| V[Imprimir metricas en stderr fd 2]
+    U -->|No| W[stack_clear: Liberar Pila A y Fin]
+    V --> W
 ```
 
 ## Diagrama de decision adaptativa
@@ -330,6 +371,8 @@ Si `k` es proporcional a `log2(n)`, puede expresarse como `O(n log n)`.
 8. Calculo del desorden.
 9. Selector adaptativo.
 10. Benchmarks y ajuste de umbrales.
+
+```mermaid
 flowchart TD
     A[Inicio] --> B[Leer argc y argv]
     B --> C[Validar formato]
@@ -348,3 +391,4 @@ flowchart TD
     L --> M
     M --> N[Mostrar operaciones]
     N --> O[Fin]
+``` 

@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/09/21 13:46:50 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/09/23 23:14:11 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/14 17:39:38 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 /*
 Copies a block of bytes from one memory address to another.
 */
+
 void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
 	unsigned char		*buff_dest;

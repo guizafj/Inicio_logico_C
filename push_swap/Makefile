@@ -16,7 +16,7 @@ STATIC_LIB = $(LIB_DIR)/libft.a
 
 MAKE 		= make
 
-SRCS	=  append_structs.c\
+SRCS	=  utils_structs.c\
 			clean_leaks.c\
 			extract_and_validate_flags.c\
 			extract_numbers.c\

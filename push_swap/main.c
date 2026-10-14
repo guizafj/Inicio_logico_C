@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/12 11:10:33 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/12 13:59:52 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/14 20:41:23 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,20 @@
 int	main(int argc, char **argv)
 {
 	t_config	config;
+	t_to_order	*stack_a;
 
 	if (argc < 2)
 		return (0);
-	config.strategy = STRAT_NONE;
-	config.bench = 0;
-	if (orchestrating_function(argc, argv, &config) == -1)
+	init_config(&config);
+	if (ft_orchestating_function(argc, argv, &config, &stack_a) == -1)
 	{
 		ft_dprintf(2, "Error\n");
 		return (-1);
 	}
-	if (config.strategy == STRAT_NONE)
-		config.strategy = STRAT_ADAPTIVE;
+	if (go_to_order(config, &stack_a) == -1)
+	{
+		ft_dprintf(2, "Error\n");
+		return (-1);
+	}
 	return (0);
 }
