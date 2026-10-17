@@ -93,7 +93,40 @@ El flujo de procesamiento previo al algoritmo se divide en fases ordenadas:
    - **Indexacion (normalizacion de valores):** Asignar a cada nodo en `stack_a->index`
      su posicion relativa de orden (`0` a `n - 1`).
    - **Calculo de desorden (`compute_disorder`):** Medir el ratio $D$ de pares desordenados.
-   - **Selector de estrategia:** Aplicar la flag configurada o decidir en base a $D$.
+   - **Motor de ordenacion (`init_to_order`):** Control del flujo algoritmico y ciclo de vida de `stack_b`.
+   - **Capa de registro y telemetria (`dispatcher`):** Conteo de operaciones, emision de instrucciones y reporte de `--bench`.
+   - **Selector de estrategia adaptativa:** Aplicar la flag configurada o decidir en base a $D$.
+### Arquitectura del Subsistema de Ordenacion y Telemetria
+
+Para evitar acoplamientos y dependencias circulares, el subsistema se divide en tres capas con responsabilidades unidireccionales estrictas:
+
+```
+[init_to_order] (Motor de ordenacion)
+       │
+       ├─► [stack_operations] (Modificacion fisica de nodos in-place)
+       │
+       └─► [dispatcher] (Registro, emision y metricas de benchmark)
+```
+
+1. **`stack_operations.c` (Primitivas de pila):**
+   - Implementa unicamente las transformaciones elementales (`ft_swap`, `ft_rotate`, `ft_reverse_rotate`, `ft_push`).
+   - Modifica los punteros de los nodos directamente (`t_to_order **`).
+   - Son funciones puras: no imprimen texto, no contabilizan movimientos ni tienen conocimiento de `t_config` ni de flags.
+
+2. **`init_to_order.c` (Motor y control algoritmico):**
+   - Responsable exclusivo del ciclo de vida de `stack_b` (la inicializa en `NULL` y garantiza que finalice vacia en `NULL`).
+   - Analiza el tamano de la lista y el nivel de desorden.
+   - Contiene la logica de resolucion: casos pequenos (2, 3 y 5 elementos) y algoritmos para entradas mayores.
+   - Aplica las operaciones sobre las pilas invocando `stack_operations` y notifica a `dispatcher` la operacion ejecutada para su registro y emision.
+   - Al terminar de ordenar, si la bandera `--bench` esta activa, solicita a `dispatcher` la presentacion de estadisticas.
+   - **Regla estricta:** `dispatcher` jamas invoca a `init_to_order`.
+
+3. **`dispatcher.c` (Registro y Telemetria):**
+   - Mantiene el registro de operaciones en el arreglo `config->op_counts[op]`.
+   - Emite la instruccion por `stdout` (`"sa\n"`, `"pb\n"`, etc.).
+   - Calcula el total acumulado de movimientos sumando `op_counts[0]` hasta `op_counts[OP_COUNT - 1]`.
+   - Presenta las estadisticas formateadas si se solicita el modo `--bench` (desorden inicial, desglose por operacion y total de movimientos).
+
 ### Representacion por indices
 
 Conviene transformar los valores originales en indices ordenados antes de
@@ -235,38 +268,31 @@ classDiagram
         +normalize_disorder()
     }
 
-    class AlgorithmSelector {
-        +select_algorithm()
+    class OrderEngine {
+        +go_to_order()
+        +sort_small()
+        +sort_adaptive()
     }
 
-    class SelectionSorter {
-        +sort()
+    class StackOperations {
+        +ft_swap()
+        +ft_push()
+        +ft_rotate()
+        +ft_reverse_rotate()
     }
 
-    class ChunkSorter {
-        +sort()
-        +calculate_chunk_size()
-    }
-
-    class RadixSorter {
-        +sort()
-        +process_bit()
-    }
-
-    class OperationLogger {
-        +record_operation()
-        +print_operations()
+    class Dispatcher {
+        +record_op()
+        +print_op()
+        +compute_total_ops()
+        +print_bench()
     }
 
     InputValidator --> StackManager
     StackManager --> DisorderAnalyzer
-    DisorderAnalyzer --> AlgorithmSelector
-    AlgorithmSelector --> SelectionSorter
-    AlgorithmSelector --> ChunkSorter
-    AlgorithmSelector --> RadixSorter
-    SelectionSorter --> OperationLogger
-    ChunkSorter --> OperationLogger
-    RadixSorter --> OperationLogger
+    DisorderAnalyzer --> OrderEngine
+    OrderEngine --> StackOperations : modifica pilas
+    OrderEngine --> Dispatcher : notifica movimiento y solicita bench
 ```
 
 Los nombres del diagrama representan responsabilidades, no obligan a usar
@@ -278,25 +304,33 @@ exactamente esos nombres de funciones o estructuras.
 sequenceDiagram
     participant U as Usuario
     participant M as Main
-    participant V as Validador
-    participant S as StackManager
-    participant A as Analyzer
-    participant D as Selector
-    participant Alg as Algoritmo
-    participant L as Logger
+    participant V as Validador (Orquestador)
+    participant S as StackManager (Utils)
+    participant A as Analyzer (Disorder)
+    participant OE as OrderEngine (init_to_order)
+    participant SO as StackOperations
+    participant D as Dispatcher (Telemetria)
 
     U->>M: Ejecuta push_swap
-    M->>V: Validar argumentos
-    V-->>M: Datos validos
-    M->>S: Crear pila A
-    S-->>M: Pila construida
-    M->>A: Calcular desorden
-    A-->>M: Indice D
-    M->>D: Elegir estrategia
-    D-->>M: Selection, Chunks o Radix
-        M->>Alg: Ordenar pilas
-        Alg->>L: Registrar operaciones
-        L-->>U: Imprimir operaciones
+    M->>V: Validar argumentos y poblar
+    V-->>M: Pila A construida y normalizada
+    M->>A: compute_disorder
+    A-->>M: Indice D en config
+    M->>OE: go_to_order(&config, &stack_a)
+    activate OE
+    Note over OE: Inicializa stack_b = NULL
+    loop Por cada movimiento necesario
+        OE->>SO: Ejecutar transformacion (swap/push/rotate)
+        OE->>D: Registrar y emitir operacion (t_op)
+        D-->>U: Imprimir instruccion en stdout ("sa\n", etc.)
+    end
+    Note over OE: Verifica stack_a ordenada y stack_b == NULL
+    opt Si config->bench esta activo
+        OE->>D: Presentar estadisticas de bench
+        D-->>U: Imprimir resumen en stderr (o segun subject)
+    end
+    deactivate OE
+    M->>S: Liberar Pila A y fin
 ```
 
 ## Flujo de Selection adaptado

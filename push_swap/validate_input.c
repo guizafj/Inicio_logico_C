@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/07 14:12:48 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/13 23:21:59 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/15 01:24:41 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ static int	is_valid_number_format(char *nbr)
 
 int	ft_what_in_position(char *pos)
 {
-	if (pos[0] == '-' && pos[0 + 1] == '-')
+	if (pos[0] == '-' && pos[1] == '-')
 		return (1);
-	else if ((pos[0] == '-' && ft_isdigit(pos[0 + 1]) == 1)
+	else if ((pos[0] == '-' && ft_isdigit(pos[1]) == 1)
 		|| ft_isdigit(pos[0]) || (pos[0] == '+' && ft_isdigit(pos[1]) == 1))
 		return (2);
 	else

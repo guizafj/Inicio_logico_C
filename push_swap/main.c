@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/12 11:10:33 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/14 20:41:23 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/15 19:42:31 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	main(int argc, char **argv)
 		ft_dprintf(2, "Error\n");
 		return (-1);
 	}
-	if (go_to_order(config, &stack_a) == -1)
+	if (go_to_order(&config, &stack_a) == -1)
 	{
 		ft_dprintf(2, "Error\n");
 		return (-1);

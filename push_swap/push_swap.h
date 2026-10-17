@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/05 18:45:35 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/14 21:51:05 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/15 18:35:35 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,22 @@
 # define PUSH_SWAP_H
 
 # include <libft.h>
+
+typedef enum e_op
+{
+	OP_SA,
+	OP_SB,
+	OP_SS,
+	OP_PA,
+	OP_PB,
+	OP_RA,
+	OP_RB,
+	OP_RR,
+	OP_RRA,
+	OP_RRB,
+	OP_RRR,
+	OP_COUNT
+}	t_op;
 
 typedef enum e_strategy
 {
@@ -24,17 +40,12 @@ typedef enum e_strategy
 	STRAT_ADAPTIVE
 }	t_strategy;
 
-typedef enum e_op
-{
-	
-}
-
 typedef struct s_config
 {
 	t_strategy	strategy;
 	int			bench;
 	int			disorder;
-	int			op_counts[11];
+	int			op_counts[OP_COUNT];
 }	t_config;
 
 typedef struct s_to_order

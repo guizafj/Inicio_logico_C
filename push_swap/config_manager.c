@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   extract_and_validate_flags.c                       :+:      :+:    :+:   */
+/*   config_manager.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/12 14:34:05 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/14 19:13:07 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/15 19:00:44 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	init_config(t_config *config)
 	config->strategy = STRAT_NONE;
 	config->bench = 0;
 	config->disorder = 0;
+	ft_bzero(config->op_counts, sizeof(config->op_counts));
 }
 
 static int	set_strategy(t_config *config, t_strategy strat)

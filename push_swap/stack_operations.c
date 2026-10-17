@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/12 01:34:11 by frgonzal          #+#    #+#             */
-/*   Updated: 2026/10/14 21:07:25 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/15 02:15:13 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,49 +21,48 @@ t_to_order	*ft_stack_last(t_to_order *lst)
 	return (lst);
 }
 
-t_to_order	*ft_rotate(t_to_order *stack)
+void	ft_rotate(t_to_order **stack)
 {
 	t_to_order	*last;
 	t_to_order	*second;
 
-	if (!stack || !stack->next)
-		return (stack);
-	last = ft_stack_last(stack);
-	second = stack->next;
-	last->next = stack;
-	stack->next = NULL;
-	return (second);
+	if (!stack || !*stack || !(*stack)->next)
+		return ;
+	last = ft_stack_last(*stack);
+	second = (*stack)->next;
+	last->next = *stack;
+	(*stack)->next = NULL;
+	*stack = second;
 }
 
-t_to_order	*ft_reverse_rotate(t_to_order *stack)
+void	ft_reverse_rotate(t_to_order **stack)
 {
 	t_to_order	*last;
 	t_to_order	*penultimate;
 
-	if (!stack || !stack->next)
-		return (stack);
-	last = ft_stack_last(stack);
-	penultimate = stack;
+	if (!stack || !*stack || !(*stack)->next)
+		return ;
+	last = ft_stack_last(*stack);
+	penultimate = *stack;
 	while (penultimate->next->next)
 		penultimate = penultimate->next;
 	penultimate->next = NULL;
-	last->next = stack;
-	return (last);
+	last->next = *stack;
+	*stack = last;
 }
 
-t_to_order	*ft_swap(t_to_order *stack)
+void	ft_swap(t_to_order **stack)
 {
 	t_to_order	*first;
 	t_to_order	*second;
 
-	if (!stack || !stack->next)
-		return (stack);
-	first = stack;
-	second = stack->next;
-	stack = stack->next->next;
+	if (!stack || !*stack || !(*stack)->next)
+		return ;
+	first = *stack;
+	second = first->next;
+	first->next = second->next;
 	second->next = first;
-	first->next = stack;
-	return (second);
+	*stack = second;
 }
 
 void	ft_push(t_to_order **a, t_to_order **b)
