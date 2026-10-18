@@ -16,16 +16,23 @@ STATIC_LIB = $(LIB_DIR)/libft.a
 
 MAKE 		= make
 
-SRCS	=  utils_structs.c\
-			clean_leaks.c\
-			extract_and_validate_flags.c\
+SRCS	=  clean_leaks.c\
+			config_manager.c\
+			dispatcher.c\
+			dispatcher_aux.c\
 			extract_numbers.c\
 			ft_split_set.c\
+			init_to_order.c\
 			join_args.c\
 			main.c\
-			orchestrating_operator.c\
+			operations_bridge.c\
+			orchestating_operator.c\
 			order_level.c\
+			stack_aux.c\
+			stack_operations.c\
+			utils_structs.c\
 			validate_input.c
+
 
 OBJS		= $(SRCS:.c=.o)
 

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   orchestrating_operator.c                           :+:      :+:    :+:   */
+/*   orchestating_operator.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/12 11:11:23 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/14 20:02:26 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/18 16:27:46 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	ft_orchestating_function(int argc, char **argv, t_config *config,
 		return (-1);
 	if (ft_is_valid_input(tokens, config) == -1)
 		return (ft_free_matrix(tokens), -1);
-	if (ft_extract_and_load_stack(tokens, &stack_a) == -1)
+	if (ft_extract_and_load_stack(tokens, stack_a) == -1)
 	{
 		ft_free_matrix(tokens);
 		return (-1);
@@ -51,7 +51,7 @@ int	ft_orchestating_function(int argc, char **argv, t_config *config,
 	ft_free_matrix(tokens);
 	if (!stack_a)
 		return (0);
-	compute_disorder(stack_a, config);
+	compute_disorder(*stack_a, config);
 	if (config->strategy == STRAT_NONE)
 		config->strategy = STRAT_ADAPTIVE;
 	return (0);
