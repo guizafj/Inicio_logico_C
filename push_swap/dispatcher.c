@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/14 23:21:16 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/16 00:12:01 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/20 00:52:19 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,19 +75,18 @@ void	show_bench(t_config config)
 	int_part = config.disorder / 100;
 	dec_part = config.disorder % 100;
 	index = 0;
-	ft_dprintf(2, "[bench] disorder:");
+	ft_dprintf(2, "[bench] disorder: ");
 	if (dec_part < 10)
 		ft_dprintf(2, "%d.0%d%%\n", int_part, dec_part);
 	else
 		ft_dprintf(2, "%d.%d%%\n", int_part, dec_part);
 	ft_dprintf(2, "[bench] strategy: %s\n", get_strategy_name(config));
 	ft_dprintf(2, "[bench] total_ops: %i", op_count(config));
-
 	while (index < OP_COUNT)
 	{
 		if (index == 0 || index == 5)
-			ft_dprintf(2, "\n[bench]");
-		ft_dprintf(2, "%s: %i", get_op_name(index), config.op_counts[index]);
+			ft_dprintf(2, "\n[bench] ");
+		ft_dprintf(2, "%s: %i ", get_op_name(index), config.op_counts[index]);
 		index++;
 	}
 }

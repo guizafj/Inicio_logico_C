@@ -6,13 +6,13 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/07 14:12:48 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/15 01:24:41 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/20 20:22:13 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static int	is_valid_number_format(char *nbr)
+int	is_valid_number_format(char *nbr)
 {
 	int	index;
 

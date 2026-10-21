@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/05 18:45:35 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/18 16:21:35 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/20 20:22:29 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ typedef struct s_to_order
 	struct s_to_order	*next;
 }	t_to_order;
 
+void			ft_medium(t_to_order **stack_a, t_to_order **stack_b,
+					t_config *config);
 void			ft_free_matrix(char **tokens);
 void			ft_stack_clear(t_to_order **stack);
 void			init_config(t_config *config);
@@ -66,6 +68,8 @@ void			show_bench(t_config config);
 int				ft_atol_safe(const char *nptr, int *out_number);
 int				ft_extract_and_load_stack(char **tokens, t_to_order **stack_a);
 char			**ft_split_set(char *str, char *charset);
+void			push_min_to_b(t_to_order **stack_a, t_to_order **stack_b,
+					t_config *config);
 int				go_to_order(t_config *config, t_to_order **stack_a);
 char			*ft_join_args(int argc, char **argv);
 int				main(int argc, char **argv);
@@ -74,8 +78,9 @@ void			exec_op(t_op op, t_to_order **stack_a, t_to_order **stack_b,
 int				ft_orchestating_function(int argc, char **argv,
 					t_config *config, t_to_order **stack_a);
 void			compute_disorder(t_to_order *stack_a, t_config *config);
+t_to_order		*ft_get_max(t_to_order *stack);
 t_to_order		*ft_get_min(t_to_order *stack);
-size_t			ft_get_min_pos(t_to_order *stack, t_to_order *min);
+size_t			ft_get_pos(t_to_order *stack, t_to_order *min);
 int				ft_is_sort(t_to_order *stack);
 int				ft_is_empty(t_to_order *stack);
 t_to_order		*ft_stack_last(t_to_order *stack);
@@ -84,11 +89,21 @@ void			ft_reverse_rotate(t_to_order **stack);
 void			ft_swap(t_to_order **stack);
 void			ft_push(t_to_order **a, t_to_order **b);
 t_to_order		*ft_node_new(int value);
-void			ft_stack_add_front(t_to_order **stack, t_to_order *new_node);
+void			ft_stack_add_back(t_to_order **stack, t_to_order *new_node);
 int				ft_has_duplicate(t_to_order *stack, int value);
 void			index_stack(t_to_order **stack_a);
 unsigned int	stack_size(t_to_order *stack_a);
 int				ft_what_in_position(char *pos);
 int				ft_is_valid_input(char **tokens, t_config *config);
+void			ft_simple(t_to_order **stack_a, t_to_order **stack_b,
+					t_config *config);
+void			ft_medium(t_to_order **stack_a, t_to_order **stack_b,
+					t_config *config);
+void			ft_complex(t_to_order **stack_a, t_to_order **stack_b,
+					t_config *config);
+void			ft_select_strategy(t_config *config, t_to_order **stack_a,
+					t_to_order **stack_b);
+char			**get_cleaned_tokens(int argc, char **argv);
+int				is_valid_number_format(char *nbr);
 
 #endif

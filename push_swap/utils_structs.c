@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/12 19:02:05 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/14 21:03:42 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/18 19:28:20 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,19 @@ t_to_order	*ft_node_new(int value)
 	return (new_node);
 }
 
-void	ft_stack_add_front(t_to_order **stack, t_to_order *new_node)
+void	ft_stack_add_back(t_to_order **stack, t_to_order *new_node)
 {
+	t_to_order	*last;
+
 	if (!stack || !new_node)
 		return ;
-	new_node->next = *stack;
-	*stack = new_node;
+	if (*stack == NULL)
+		*stack = new_node;
+	else
+	{
+		last = ft_stack_last(*stack);
+		last->next = new_node;
+	}
 }
 
 int	ft_has_duplicate(t_to_order *stack, int value)

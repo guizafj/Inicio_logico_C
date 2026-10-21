@@ -67,6 +67,22 @@ El flujo de procesamiento previo al algoritmo se divide en fases ordenadas:
      emision del mensaje `"Error\n"` en `stderr` (fd 2).
 6. **Estructuras de datos del modulo:**
    ```c
+   typedef enum e_op
+   {
+       OP_SA,
+       OP_SB,
+       OP_SS,
+       OP_PA,
+       OP_PB,
+       OP_RA,
+       OP_RB,
+       OP_RR,
+       OP_RRA,
+       OP_RRB,
+       OP_RRR,
+       OP_COUNT
+   }   t_op;
+
    typedef enum e_strategy
    {
        STRAT_NONE,
@@ -80,6 +96,8 @@ El flujo de procesamiento previo al algoritmo se divide en fases ordenadas:
    {
        t_strategy  strategy;
        int         bench;
+       int         disorder;
+       int         op_counts[OP_COUNT];
    }   t_config;
 
    typedef struct s_to_order
@@ -98,12 +116,15 @@ El flujo de procesamiento previo al algoritmo se divide en fases ordenadas:
    - **Selector de estrategia adaptativa:** Aplicar la flag configurada o decidir en base a $D$.
 ### Arquitectura del Subsistema de Ordenacion y Telemetria
 
-Para evitar acoplamientos y dependencias circulares, el subsistema se divide en tres capas con responsabilidades unidireccionales estrictas:
+Para evitar acoplamientos y dependencias circulares, el subsistema se articula mediante una capa puente con responsabilidades unidireccionales estrictas:
 
 ```
 [init_to_order] (Motor de ordenacion)
        │
-       ├─► [stack_operations] (Modificacion fisica de nodos in-place)
+       ▼
+[operations_bridge] (exec_op: despacha la operacion)
+       │
+       ├─► [stack_operations] (Modificacion fisica in-place de punteros)
        │
        └─► [dispatcher] (Registro, emision y metricas de benchmark)
 ```
@@ -113,15 +134,20 @@ Para evitar acoplamientos y dependencias circulares, el subsistema se divide en 
    - Modifica los punteros de los nodos directamente (`t_to_order **`).
    - Son funciones puras: no imprimen texto, no contabilizan movimientos ni tienen conocimiento de `t_config` ni de flags.
 
-2. **`init_to_order.c` (Motor y control algoritmico):**
+2. **`operations_bridge.c` (Capa puente de ejecucion):**
+   - Expone `exec_op(op, stack_a, stack_b, config)`.
+   - Aplica la operacion fisica correspondiente delegando en `stack_operations.c`.
+   - Registra el uso de la operacion con `record_op(op, config)` y la emite en `stdout` con `print_op(op)`.
+
+3. **`init_to_order.c` (Motor y control algoritmico):**
    - Responsable exclusivo del ciclo de vida de `stack_b` (la inicializa en `NULL` y garantiza que finalice vacia en `NULL`).
    - Analiza el tamano de la lista y el nivel de desorden.
-   - Contiene la logica de resolucion: casos pequenos (2, 3 y 5 elementos) y algoritmos para entradas mayores.
-   - Aplica las operaciones sobre las pilas invocando `stack_operations` y notifica a `dispatcher` la operacion ejecutada para su registro y emision.
-   - Al terminar de ordenar, si la bandera `--bench` esta activa, solicita a `dispatcher` la presentacion de estadisticas.
+   - Contiene la logica de resolucion: casos pequenos (2, 3 y 5 elementos) y delegacion a algoritmos mayores (`ft_simple`, `ft_medium`, `ft_complex`, `ft_select_strategy`).
+   - Aplica las operaciones sobre las pilas invocando `exec_op` de `operations_bridge.c`.
+   - Al terminar de ordenar, si la bandera `--bench` esta activa, solicita a `dispatcher` la presentacion de estadisticas con `show_bench`.
    - **Regla estricta:** `dispatcher` jamas invoca a `init_to_order`.
 
-3. **`dispatcher.c` (Registro y Telemetria):**
+4. **`dispatcher.c` y `dispatcher_aux.c` (Registro y Telemetria):**
    - Mantiene el registro de operaciones en el arreglo `config->op_counts[op]`.
    - Emite la instruccion por `stdout` (`"sa\n"`, `"pb\n"`, etc.).
    - Calcula el total acumulado de movimientos sumando `op_counts[0]` hasta `op_counts[OP_COUNT - 1]`.
@@ -335,76 +361,110 @@ sequenceDiagram
 
 ## Flujo de Selection adaptado
 
-El grupo debe decidir como se localiza el minimo o el maximo, que pila se usa
-como auxiliar y si conviene rotar o invertir antes de mover un elemento.
-
-La complejidad teorica general es:
+Corresponde a la estrategia simple con complejidad:
 
 $$
 O(n^2)
 $$
 
-Su interes principal es resolver de forma controlada las entradas pequenas.
-Solo debe asignarse al nivel `D < 0.2` si la adaptacion implementada puede
-justificar el requisito `O(n)` de ese nivel.
+Implementado en `ft_simple` como Selection Sort directo sobre la lista: busca repetidamente el minimo absoluto en la Pila A usando el camino de rotacion mas corto (`ra` o `rra`), lo desplaza a la Pila B con `pb` hasta vaciar los elementos desordenados y finalmente restaura la secuencia en orden creciente devolviendo los elementos con `pa`. Esta estrategia cumple con la clasificacion requerida para `--simple` y el umbral de desorden bajo.
 
-## Flujo de Chunks
+## Flujo de Chunks (Estrategia Media O(n√n))
 
-1. Calcular el numero o el tamano de los chunks.
-2. Seleccionar el rango de indices del chunk actual.
-3. Mover a B los elementos que pertenecen al rango.
-4. Decidir como rotar B para facilitar la reconstruccion.
-5. Devolver los elementos a A en orden.
-6. Pasar al siguiente chunk.
+Corresponde a la estrategia asignada a `--medium` y al rango intermedio `0.2 <= D < 0.5`.
+1. Calcular el tamano del chunk o ventana deslizante, proporcional a `sqrt(n)` (o factores de escala segun `n = 100` o `n = 500`).
+2. Recorrer y desplazar a la Pila B aquellos elementos cuyos indices normalizados pertenezcan al rango del chunk activo.
+3. Optimizar el orden interno de B (rotando con `rb` los elementos menores dentro del chunk para preclasificar en dos mitades).
+4. Al vaciar A, reconstruir devolviendo desde B a A buscando siempre el maximo relativo con el camino mas corto hacia la cima.
 
-Si se utilizan aproximadamente `sqrt(n)` chunks, hay que documentar si el
-tamano se calcula como `n / sqrt(n)` o si se usa otra formula.
+## Flujo de Radix LSD (Estrategia Compleja O(n log n))
 
-## Flujo de Radix LSD
+Estrategia implementada para `--complex` y para el rango de desorden alto `D >= 0.5`.
+Aprovecha que los elementos estan previamente normalizados en indices contiguos desde `0` hasta `n - 1`:
+1. Determinar el numero maximo de bits necesarios segun `n - 1` (`max_bits`).
+2. Iterar bit a bit desde el bit menos significativo (LSB) hasta el mas significativo (MSB).
+3. Para cada bit:
+   - Si el bit actual del indice en la cima de A es `0`, se desplaza a B con `pb`.
+   - Si el bit actual es `1`, se conserva en A rotando con `ra`.
+4. Devolver todos los elementos de B hacia A mediante `pa`.
+5. Repetir el proceso para el siguiente bit hasta que todos los bits hayan sido evaluados, garantizando la estabilidad del ordenamiento.
 
-1. Trabajar con indices no negativos.
-2. Empezar por el bit menos significativo.
-3. Separar los elementos segun el bit actual.
-4. Utilizar las operaciones de las pilas para realizar la separacion.
-5. Restaurar los elementos en A.
-6. Avanzar al siguiente bit.
-7. Repetir hasta procesar todos los bits necesarios.
-
-Su complejidad habitual es:
+Su complejidad es:
 
 $$
-O(n \cdot k)
+O(n \cdot k) \approx O(n \log n)
 $$
 
-Si `k` es proporcional a `log2(n)`, puede expresarse como `O(n log n)`.
+donde `k` es el numero de bits (`k = ceil(log2(n))`).
 
-## Decisiones pendientes del grupo
+---
 
-- Definir la estructura definitiva de cada pila.
-- Decidir si el indice de desorden se calcula antes de normalizar a indices o
-    despues.
-- Verificar que el metodo del nivel bajo cumple `O(n)`.
-- Verificar que el metodo del nivel medio cumple `O(n sqrt(n))`.
-- Verificar que el metodo del nivel alto cumple `O(n log n)`.
-- Establecer los umbrales mediante benchmarks sin cambiar los limites `0.2`
-    y `0.5`.
-- Decidir si el selector usa solo `n` y `D` o tambien el coste observado.
-- Definir como se registra y se imprime cada operacion.
-- Definir las responsabilidades exactas de cada archivo.
-- Crear una tabla comun para comparar numero de movimientos y tiempo.
+## Arquitectura del Programa Bonus: `checker`
 
-## Orden recomendado de implementacion
+El objetivo del programa `checker` es verificar de forma autonoma si una secuencia de operaciones leida desde la entrada estandar (`stdin`) deja la Pila A completamente ordenada y la Pila B vacia.
 
-1. Validacion y conversion de argumentos.
-2. Estructura de pilas y liberacion de memoria.
-3. Operaciones primitivas de `push_swap`.
-4. Casos pequenos con Selection adaptado.
-5. Normalizacion a indices.
-6. Chunks.
-7. Radix LSD.
-8. Calculo del desorden.
-9. Selector adaptativo.
-10. Benchmarks y ajuste de umbrales.
+### 1. Requisitos y comportamiento (Norma 42)
+- **Argumentos de entrada:** Lista de enteros con el mismo formato que `push_swap` (`./checker 3 2 1` o `./checker "3 2 1"`).
+- **Sin argumentos:** Si `argc < 2`, termina en silencio retornando `0`.
+- **Errores de argumentos:** Si contiene elementos no numericos, desbordamientos de `int` o duplicados, emite `"Error\n"` en `stderr` (fd 2) y termina con codigo de error. **No admite banderas** (como `--simple` o `--bench`); cualquier bandera se considera argumento no numerico y genera `"Error\n"`.
+- **Lectura de instrucciones:** Lee linea por linea desde la entrada estandar (`stdin`, fd 0) utilizando `ft_get_next_line`.
+- **Instrucciones validas:** `sa`, `sb`, `ss`, `pa`, `pb`, `ra`, `rb`, `rr`, `rra`, `rrb` seguidas de `\n`.
+- **Instruccion desconocida:** Si se lee una instruccion no valida o mal formateada, detiene la lectura, libera toda la memoria reservada, emite `"Error\n"` en `stderr` (fd 2) y termina con error.
+- **Resultado final (al llegar a EOF / NULL):**
+  - Si la Pila A esta ordenada (`ft_is_sort`) **y** la Pila B esta vacia (`ft_is_empty` o `stack_b == NULL`) $\to$ Emite `"OK\n"` en `stdout` (fd 1).
+  - En cualquier otro caso $\to$ Emite `"KO\n"` en `stdout` (fd 1).
+
+### 2. Diagrama de flujo de `checker`
+
+```mermaid
+flowchart TD
+    A[Inicio: argc, argv] --> B{argc < 2?}
+    B -->|Si| Z[Fin silencioso: return 0]
+    B -->|No| C[Parseo y Validacion de argumentos]
+    C -->|Fallo o token invalido/flag| ERR[Imprimir Error en stderr fd 2 y salir]
+    C -->|Exito| D[Construir Pila A y stack_b = NULL]
+    D --> E[Bucle: line = ft_get_next_line 0]
+    E -->|line != NULL| F{Es instruccion valida?}
+    F -->|No: instruccion desconocida| G[free line, free stacks] --> ERR
+    F -->|Si: sa, pb, rra, etc.| H[Ejecutar operacion en silencio in-place]
+    H --> I[free line] --> E
+    E -->|line == NULL: EOF| J{stack_a ordenada Y stack_b vacia?}
+    J -->|Si| K[Imprimir OK en stdout fd 1]
+    J -->|No| L[Imprimir KO en stdout fd 1]
+    K --> M[Liberar memoria de pilas y return 0]
+    L --> M
+```
+
+### 3. Matriz de reutilizacion de codigo
+
+| Componente / Archivo | Utilizado en `push_swap` | Reutilizado en `checker` | Responsabilidad |
+| :--- | :---: | :---: | :--- |
+| `join_args.c` | ✅ | ✅ | Unificacion de argumentos en un unico string |
+| `ft_split_set.c` | ✅ | ✅ | Division por delimitadores de espacios y saltos |
+| `extract_numbers.c` | ✅ | ✅ | Conversion `ft_atol_safe`, control `INT_MIN/MAX` y duplicados |
+| `utils_structs.c` | ✅ | ✅ | Creacion de nodos, encadenamiento y limpieza de pilas |
+| `clean_leaks.c` | ✅ | ✅ | Liberacion segura de matrices y estructuras |
+| `stack_operations.c`| ✅ | ✅ | Operaciones primitivas in-place puras (sin impresion) |
+| `stack_aux.c` | ✅ | ✅ | Verificacion final: `ft_is_sort` y `ft_is_empty` |
+| `validate_input.c` | ✅ | Adaptado/Exclusivo | En push_swap valida flags; en checker rechaza flags |
+| `operations_bridge.c`| ✅ | ❌ | Exclusivo de push_swap (imprime y cuenta movimientos) |
+| `dispatcher.c` | ✅ | ❌ | Exclusivo de push_swap (telemetria y teletexto bench) |
+| `init_to_order.c` | ✅ | ❌ | Exclusivo de push_swap (algoritmos de ordenacion) |
+| `checker_bonus.c` | ❌ | ✅ | Modulo principal de lectura GNL y despacho del bonus |
+
+---
+
+## Estado actual del proyecto
+
+1. **Validacion y conversion:** Implementado y blindado (`INT_MIN/MAX`, duplicados, cadenas vacias y con espacios).
+2. **Estructura y memoria:** Manejo de listas con punteros dobles y liberacion completa sin leaks (valgrind verificado).
+3. **Operaciones primitivas:** `sa`, `sb`, `ss`, `pa`, `pb`, `ra`, `rb`, `rr`, `rra`, `rrb`, `rrr` desacopladas de la emision.
+4. **Casos pequenos:** Casos de 2, 3 y 5 elementos optimizados en `init_to_order.c`.
+5. **Normalizacion:** Normalizacion a indices continuos $0 \dots n-1$ implementada en `extract_numbers.c`.
+6. **Algoritmo de Chunks ($O(n\sqrt{n})$):** Implementado en `chunks_sort.c` (~5150 operaciones en 500 numeros, nota maxima en 42).
+7. **Algoritmo Radix LSD ($O(n \log n)$):** Implementado en `ft_complex.c` (6784 operaciones en 500 numeros, 100% estable).
+8. **Desorden y Adaptativo:** Calculo de $D$ sin `for` en `order_level.c` y selector adaptativo en `strategy_implement.c`.
+9. **Bonus `checker`:** En construccion mediante `checker_bonus.c`, `checker_bonus.h` y regla `bonus` en `Makefile`.
 
 ```mermaid
 flowchart TD

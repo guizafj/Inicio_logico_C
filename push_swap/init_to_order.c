@@ -6,13 +6,13 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/14 20:45:34 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/18 16:26:24 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/20 03:23:12 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static	void	sort_three(t_to_order **stack_a, t_config *config)
+static void	sort_three(t_to_order **stack_a, t_config *config)
 {
 	int	first;
 	int	second;
@@ -21,11 +21,11 @@ static	void	sort_three(t_to_order **stack_a, t_config *config)
 	first = (*stack_a)->index;
 	second = (*stack_a)->next->index;
 	third = (*stack_a)->next->next->index;
-	if (first > second && second < third)
+	if (first > second && first < third)
 		exec_op(OP_SA, stack_a, NULL, config);
-	else if (first > second && first > third)
+	else if (first > second && first > third && second < third)
 		exec_op(OP_RA, stack_a, NULL, config);
-	else if (first < second && second > third)
+	else if (first < third && second > third)
 	{
 		exec_op(OP_RRA, stack_a, NULL, config);
 		exec_op(OP_SA, stack_a, NULL, config);
@@ -39,15 +39,15 @@ static	void	sort_three(t_to_order **stack_a, t_config *config)
 	}
 }
 
-static	void	push_min_to_b(t_to_order **stack_a, t_to_order **stack_b,
-					t_config *config)
+void	push_min_to_b(t_to_order **stack_a, t_to_order **stack_b,
+	t_config *config)
 {
 	t_to_order		*min;
 	size_t			pos;
 	unsigned int	size;
 
 	min = ft_get_min(*stack_a);
-	pos = ft_get_min_pos(*stack_a, min);
+	pos = ft_get_pos(*stack_a, min);
 	size = stack_size(*stack_a);
 	while (*stack_a != min)
 	{
@@ -56,11 +56,12 @@ static	void	push_min_to_b(t_to_order **stack_a, t_to_order **stack_b,
 		else
 			exec_op(OP_RRA, stack_a, NULL, config);
 	}
-	exec_op(OP_PB, stack_a, stack_b, config);
+	if (!ft_is_sort(*stack_a))
+		exec_op(OP_PB, stack_a, stack_b, config);
 }
 
-static	void	sort_five(t_to_order **stack_a, t_to_order **stack_b,
-					t_config *config)
+static void	sort_five(t_to_order **stack_a, t_to_order **stack_b,
+	t_config *config)
 {
 	unsigned int	size;
 
@@ -81,8 +82,8 @@ static	void	sort_five(t_to_order **stack_a, t_to_order **stack_b,
 	}
 }
 
-static	void	minimal_cases_to_order(t_to_order **stack_a,
-		t_to_order **stack_b, unsigned int counter, t_config *config)
+static void	minimal_cases_to_order(t_to_order **stack_a,
+	t_to_order	**stack_b, unsigned int counter, t_config *config)
 {
 	if (counter == 2)
 		exec_op(OP_SA, stack_a, stack_b, config);
@@ -90,8 +91,6 @@ static	void	minimal_cases_to_order(t_to_order **stack_a,
 		sort_three(stack_a, config);
 	else if (counter <= 5)
 		sort_five(stack_a, stack_b, config);
-	if (config->bench != 0)
-		show_bench(*config);
 }
 
 int	go_to_order(t_config *config, t_to_order **stack_a)
@@ -105,6 +104,15 @@ int	go_to_order(t_config *config, t_to_order **stack_a)
 	counter = stack_size(*stack_a);
 	if (counter <= 5)
 		minimal_cases_to_order(stack_a, &stack_b, counter, config);
-	ft_stack_clear(&stack_b);
+	else if (config->strategy == STRAT_SIMPLE)
+		ft_simple(stack_a, &stack_b, config);
+	else if (config->strategy == STRAT_MEDIUM)
+		ft_medium(stack_a, &stack_b, config);
+	else if (config->strategy == STRAT_COMPLEX)
+		ft_complex(stack_a, &stack_b, config);
+	else if (config->strategy == STRAT_ADAPTIVE)
+		ft_select_strategy(config, stack_a, &stack_b);
+	if (config->bench != 0)
+		show_bench(*config);
 	return (0);
 }

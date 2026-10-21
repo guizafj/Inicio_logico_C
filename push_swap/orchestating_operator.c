@@ -6,13 +6,13 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/12 11:11:23 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/18 16:27:46 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/20 20:21:31 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static char	**get_cleaned_tokens(int argc, char **argv)
+char	**get_cleaned_tokens(int argc, char **argv)
 {
 	char	*raw_args;
 	char	**tokens;
@@ -35,9 +35,9 @@ static char	**get_cleaned_tokens(int argc, char **argv)
 int	ft_orchestating_function(int argc, char **argv, t_config *config,
 		t_to_order **stack_a)
 {
-	char		**tokens;
+	char	**tokens;
 
-	stack_a = NULL;
+	*stack_a = NULL;
 	tokens = get_cleaned_tokens(argc, argv);
 	if (!tokens)
 		return (-1);

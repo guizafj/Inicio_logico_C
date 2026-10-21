@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/28 14:19:59 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/08 15:59:35 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/18 19:52:14 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	ft_count_words(char *str, char *charset)
 	while (str[i])
 	{
 		if ((!ft_is_sep(str[i], charset) && (str[i] != '\0'))
-			&& (ft_is_sep(str[i - 1], charset) || i == 0))
+			&& ((i && ft_is_sep(str[i - 1], charset)) || i == 0))
 			count++;
 		i++;
 	}

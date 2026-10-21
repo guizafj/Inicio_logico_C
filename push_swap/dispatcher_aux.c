@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/15 23:25:19 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/18 13:30:55 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/20 12:18:05 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,3 @@ int	op_count(t_config config)
 	}
 	return (total_ops);
 }
-

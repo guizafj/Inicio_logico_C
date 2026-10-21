@@ -9,6 +9,7 @@
 
 # Name of library
 NAME		= push_swap
+NAME_BONUS	= checker
 
 LIB_DIR = Libft
 
@@ -31,8 +32,12 @@ SRCS	=  clean_leaks.c\
 			stack_aux.c\
 			stack_operations.c\
 			utils_structs.c\
-			validate_input.c
+			validate_input.c\
+			strategy_implement.c\
+			ft_complex.c\
+			chunks_sort.c
 
+SRCS_BONUS	= checker_bonus.c
 
 OBJS		= $(SRCS:.c=.o)
 
@@ -44,6 +49,8 @@ RM		= rm -f
 
 # Default rule
 all: $(NAME)
+
+bonus: $(NAME_BONUS)
 
 # Implicit rule to compiling .c files into .o files
 %.o: %.c push_swap.h
@@ -63,7 +70,7 @@ clean:
 
 # Clean all
 fclean: clean
-	$(RM) $(NAME)
+	$(RM) $(NAME) $(NAME_BONUS)
 	$(MAKE) -C $(LIB_DIR) fclean
 
 # Recompile everything

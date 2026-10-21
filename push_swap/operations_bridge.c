@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/18 13:30:31 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/18 15:02:46 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/20 03:13:08 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,5 @@ void	exec_op(t_op op, t_to_order **stack_a, t_to_order **stack_b,
 	else
 		apply_rotates(op, stack_a, stack_b);
 	record_op(op, config);
-	if (config->bench == 0)
-		print_op(op);
+	print_op(op);
 }

@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/12 11:13:39 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/14 21:16:46 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/18 20:12:20 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	process_number_token(char *token, t_to_order **stack_a)
 		ft_stack_clear(stack_a);
 		return (-1);
 	}
-	ft_stack_add_front(stack_a, new_node);
+	ft_stack_add_back(stack_a, new_node);
 	return (0);
 }
 

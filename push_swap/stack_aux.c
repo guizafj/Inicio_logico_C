@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   stack_aux.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frgonzal <frgonzal@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/15 23:43:17 by frgonzal          #+#    #+#             */
-/*   Updated: 2026/10/17 20:33:41 by frgonzal         ###   ########.fr       */
+/*   Updated: 2026/10/20 12:10:36 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,28 @@ t_to_order	*ft_get_min(t_to_order *stack)
 	return (min);
 }
 
-size_t	ft_get_min_pos(t_to_order *stack, t_to_order *min)
+t_to_order	*ft_get_max(t_to_order *stack)
+{
+	t_to_order	*max;
+
+	if (!stack)
+		return (NULL);
+	max = stack;
+	while (stack)
+	{
+		if (max->index < stack->index)
+			max = stack;
+		stack = stack->next;
+	}
+	return (max);
+}
+
+size_t	ft_get_pos(t_to_order *stack, t_to_order *value)
 {
 	size_t	pos;
 
 	pos = 0;
-	while (stack != min)
+	while (stack != value)
 	{
 		pos++;
 		stack = stack->next;

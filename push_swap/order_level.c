@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/05 18:44:07 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/14 18:52:27 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/19 20:35:26 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,5 @@ void	compute_disorder(t_to_order *stack_a, t_config *config)
 		}
 		current = current->next;
 	}
-	config->disorder = ((mistakes * 10000) / total_pairs);
+	config->disorder = ((int)(((double)mistakes / total_pairs) * 10000));
 }
