@@ -6,13 +6,13 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 17:49:34 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/20 19:47:54 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/21 21:23:37 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker_bonus.h"
 
-static	int	checker_input(char **tokens)
+static int	checker_input(char **tokens)
 {
 	int	index;
 

@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 12:19:38 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/20 20:32:45 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/21 19:19:38 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	main(int argc, char **argv)
 		ft_dprintf(2, "Error\n");
 		return (-1);
 	}
-	if (read_and_process_instructions(stack_a, stack_b) == -1)
+	if (read_and_process_instructions(&stack_a, &stack_b) == -1)
 	{
 		ft_stack_clear(&stack_a);
 		ft_stack_clear(&stack_b);

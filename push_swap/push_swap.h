@@ -6,7 +6,7 @@
 /*   By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/05 18:45:35 by fradiaz           #+#    #+#             */
-/*   Updated: 2026/10/20 20:22:29 by fradiaz          ###   ########.fr       */
+/*   Updated: 2026/10/21 18:33:06 by fradiaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ void			push_min_to_b(t_to_order **stack_a, t_to_order **stack_b,
 					t_config *config);
 int				go_to_order(t_config *config, t_to_order **stack_a);
 char			*ft_join_args(int argc, char **argv);
-int				main(int argc, char **argv);
 void			exec_op(t_op op, t_to_order **stack_a, t_to_order **stack_b,
 					t_config *config);
 int				ft_orchestating_function(int argc, char **argv,
