@@ -6,10 +6,10 @@
 #    By: fradiaz <fradiaz@student.42malaga.com>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/10/25 23:23:59 by fradiaz           #+#    #+#              #
-#    Updated: 2026/10/25 23:24:45 by fradiaz          ###   ########.fr        #
+#    Updated: 2026/10/26 10:47:25 by fradiaz          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-def ft_hello_garden():None
+def ft_hello_garden()->None:
 	print("Hello, Garden Community!")
 
