@@ -10,6 +10,7 @@
 #                                                                           #
 # ************************************************************************* #
 
+
 def ft_harvest_total() -> None:
     day_one = int(input("Day 1 harvest: "))
     day_two = int(input("Day 2 harvest: "))

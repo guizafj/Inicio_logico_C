@@ -7,7 +7,7 @@
 #   By: fradiaz <fradiaz@student.42malaga.com>       +#+  +:+       +#+       #
 #                                                  +#+#+#+#+#+   +#+          #
 #   Created: 2026/10/28 16:32:06 by fradiaz             #+#    #+#            #
-#   Updated: 2026/10/29 02:24:23 by fradiaz            ###   ########.fr      #
+#   Updated: 2026/11/01 19:09:36 by fradiaz            ###   ########.fr      #
 #                                                                             #
 # ########################################################################### #
 
@@ -44,14 +44,15 @@ class Plant:
 
     @staticmethod
     def check_age(age: int) -> None:
-        if (age < 365):
+        if age < 365:
             print(f"Is {age} days more than year? -> False")
         else:
             print(f"Is {age} days more than year? -> True")
 
     @classmethod
     def create_anonymous(cls) -> "Plant":
-       return cls("Unknown plant", 0.0, 0)
+        return cls("Unknown plant", 0.0, 0)
+
 
 class Flower(Plant):
     def __init__(self, name: str, height: float, age: int, color: str):
@@ -72,19 +73,29 @@ class Flower(Plant):
         print(f" Color: {self.color.capitalize()}")
         self.is_bloom()
 
+
 class Seed(Flower):
-    def __init__(self, name: str, height: float, age: int,
-                 color: str, seed: int):
+    def __init__(
+            self,
+            name: str,
+            height: float,
+            age: int,
+            color: str,
+            seed: int):
         super().__init__(name, height, age, color)
         self.seed = seed
 
-    def new_seed(self):
+    def new_seed(self) -> None:
         self.is_bloom()
-        
+
 
 class Tree(Plant):
-    def __init__(self, name: str, height: float, age: int,
-                 trunk_diameter: float):
+    def __init__(
+            self,
+            name: str,
+            height: float,
+            age: int,
+            trunk_diameter: float):
         super().__init__(name, height, age)
         self.trunk_diameter = trunk_diameter
         self.shade: float = 0
@@ -103,4 +114,3 @@ class Tree(Plant):
         self.show()
         print(f" Trunk diameter: {round(self.trunk_diameter, 1)}cm")
         self.produce_shade()
-

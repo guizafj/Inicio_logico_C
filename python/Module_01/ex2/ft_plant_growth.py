@@ -6,7 +6,7 @@
 #   By: fradiaz <fradiaz@student.42malaga.com>       +#+  +:+       +#+       #
 #                                                  +#+#+#+#+#+   +#+          #
 #   Created: 2026/10/26 23:16:46 by fradiaz             #+#    #+#            #
-#   Updated: 2026/10/27 02:36:41 by fradiaz            ###   ########.fr      #
+#   Updated: 2026/11/01 19:10:14 by fradiaz            ###   ########.fr      #
 #                                                                             #
 # ########################################################################### #
 
@@ -20,7 +20,7 @@ class Plant:
     def increase_grow(self) -> None:
         self.height += 0.8
 
-    def increase_age(self):
+    def increase_age(self) -> None:
         self.age += 1
 
     def show(self, days: int) -> None:

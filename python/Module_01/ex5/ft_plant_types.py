@@ -6,7 +6,7 @@
 #   By: fradiaz <fradiaz@student.42malaga.com>       +#+  +:+       +#+       #
 #                                                  +#+#+#+#+#+   +#+          #
 #   Created: 2026/10/27 17:32:59 by fradiaz             #+#    #+#            #
-#   Updated: 2026/10/28 16:25:36 by fradiaz            ###   ########.fr      #
+#   Updated: 2026/11/01 19:09:53 by fradiaz            ###   ########.fr      #
 #                                                                             #
 # ########################################################################### #
 
@@ -63,8 +63,12 @@ class Flower(Plant):
 
 
 class Tree(Plant):
-    def __init__(self, name: str, height: float, age: int,
-                 trunk_diameter: float):
+    def __init__(
+            self,
+            name: str,
+            height: float,
+            age: int,
+            trunk_diameter: float):
         super().__init__(name, height, age)
         self.trunk_diameter = trunk_diameter
         self.shade: float = 0
@@ -86,8 +90,12 @@ class Tree(Plant):
 
 
 class Vegetable(Plant):
-    def __init__(self, name: str, height: float, age: int,
-                 harvest_season: str):
+    def __init__(
+            self,
+            name: str,
+            height: float,
+            age: int,
+            harvest_season: str):
         super().__init__(name, height, age)
         self.harvest_season = harvest_season
         self.nutricional_value: float = 0
@@ -99,7 +107,7 @@ class Vegetable(Plant):
         self.nutricional_value = days
         self.show_vegetable()
 
-    def show_vegetable(self):
+    def show_vegetable(self) -> None:
         self.show()
         print(f" Harvest season: {self.harvest_season.capitalize()}")
         print(f" Nutricional value: {round(self.nutricional_value, 0)}")
