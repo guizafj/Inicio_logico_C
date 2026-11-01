@@ -21,6 +21,7 @@ build/
 
 # Directorio de herramientas
 norminette/
+.mypy_cache/
 
 # Editor files
 .DS_Store
@@ -36,7 +37,7 @@ norminette/
 *.su
 *.gch
 core
-core.* 
+core.*
 vgcore.*
 
 # Archivos temporales
