@@ -19,7 +19,7 @@ def validate_input(value: str) -> int:
         new = int(value)
     except ValueError:
         raise ValueError(f"Invalid parameter: '{value}'")
-    return (new)
+    return new
 
 
 def process_input() -> None:
